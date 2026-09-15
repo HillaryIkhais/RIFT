@@ -1,0 +1,24 @@
+{
+  "incident_id": "inc_047",
+  "run_id": "run_001",
+  "agent_version": "support-v1",
+  "category": "WRONG_ENTITY_SELECTION",
+  "status": "RESOLVED",
+  "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+  "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+  "root_cause": "Policy matches by amount instead of status",
+  "violated_invariant": "refund.status must equal requested status",
+  "diagnosis": {
+    "expected": "Select R92.",
+    "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+    "expected_entity": "R92",
+    "selected_entity": "R91",
+    "decision_signal": "amount=$80 (matched by amount, ignored status)",
+    "ignored_signal": "status=PENDING (should have filtered to R92)",
+    "failure_class": "WRONG_ENTITY_SELECTION",
+    "root_cause": "Policy matches by amount instead of status"
+  },
+  "run_hash": "4b54c768e2d2415bf543aa36eebd9590bb6bb019cc262a91a4c4e10f9e78f4b3",
+  "incident_hash": "8991db69a6e6ac3d0fdabe565dce919dc517930ddb7a6432aa0485f6f4302472",
+  "resolved_at": "2026-09-15T20:01:25.647188+00:00"
+}

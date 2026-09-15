@@ -1,0 +1,48 @@
+{
+  "artifact_type": "RIFT_RESOLUTION",
+  "version": "1.0",
+  "incident_id": "inc_050",
+  "world_hash": "e02e7d86c347a9f004a2ef43bf5ef94d6bc3df7aeec07b1c57e4d833c94e3476",
+  "agent_version": "v1.0",
+  "category": "STATE_TRANSITION_VIOLATION",
+  "status": "RESOLVED",
+  "summary": {
+    "what_happened": "Agent cancelled shipped order 1843",
+    "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+    "root_cause": "Agent does not check order status before acting",
+    "violated_invariant": "SHIPPED must never transition to CANCELLED"
+  },
+  "diagnosis": {
+    "expected": "SHIPPED -> REFUND_REQUEST.",
+    "actual": "SHIPPED -> CANCELLED.",
+    "expected_entity": "escalate to refund request",
+    "selected_entity": "cancel_order(1843)",
+    "decision_signal": "order exists (agent did not check status before cancel)",
+    "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+    "failure_class": "STATE_TRANSITION_VIOLATION",
+    "root_cause": "Agent does not check order status before acting"
+  },
+  "reproduction": {
+    "replay_id": "rpl_000",
+    "result": "PASS",
+    "failure_reproduced": false,
+    "violations": []
+  },
+  "fix": {
+    "agent_version": "v1.1",
+    "verdict": "FIX_VERIFIED",
+    "total": 1,
+    "fixed": 1,
+    "still_broken": []
+  },
+  "resolution": {
+    "resolved_at": "2026-09-15T20:01:25.655452+00:00",
+    "fix_survived_incident": true,
+    "evidence_chain": [
+      "incident_frozen_with_hash",
+      "failure_reproduced_from_frozen_world",
+      "fix_applied_to_agent",
+      "fix_verified_against_original_incident"
+    ]
+  }
+}

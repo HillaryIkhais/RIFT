@@ -1,0 +1,202 @@
+{
+  "incident_id": "inc_047",
+  "category": "WRONG_ENTITY_SELECTION",
+  "world": {
+    "state": {
+      "customers": [
+        {
+          "id": 42,
+          "name": "Sarah Chen",
+          "email": "sarah@x.com",
+          "address": "1 Main St"
+        }
+      ],
+      "orders": [
+        {
+          "id": 1842,
+          "customer_id": 42,
+          "amount_cents": 8000,
+          "status": "DELIVERED"
+        }
+      ],
+      "refunds": [
+        {
+          "id": "R91",
+          "order_id": 1842,
+          "amount_cents": 8000,
+          "status": "COMPLETED"
+        },
+        {
+          "id": "R92",
+          "order_id": 1842,
+          "amount_cents": 8000,
+          "status": "PENDING"
+        }
+      ],
+      "payouts": [
+        {
+          "id": 1,
+          "refund_id": "R91",
+          "amount_cents": 8000
+        }
+      ],
+      "tickets": [
+        {
+          "id": 7,
+          "customer_id": 42,
+          "message": "Please process my pending refund",
+          "status": "OPEN"
+        }
+      ],
+      "emails": []
+    },
+    "trajectory": [
+      {
+        "seq": 1,
+        "type": "tool_call",
+        "tool": "lookup_customer",
+        "args": {
+          "name": "Sarah Chen"
+        }
+      },
+      {
+        "seq": 2,
+        "type": "tool_result",
+        "tool": "lookup_customer",
+        "result": {
+          "id": 42,
+          "name": "Sarah Chen",
+          "email": "sarah@x.com",
+          "address": "1 Main St"
+        }
+      },
+      {
+        "seq": 3,
+        "type": "tool_call",
+        "tool": "lookup_order",
+        "args": {
+          "customer_id": 42
+        }
+      },
+      {
+        "seq": 4,
+        "type": "tool_result",
+        "tool": "lookup_order",
+        "result": {
+          "id": 1842,
+          "customer_id": 42,
+          "amount_cents": 8000,
+          "status": "DELIVERED"
+        }
+      },
+      {
+        "seq": 5,
+        "type": "tool_call",
+        "tool": "lookup_refunds",
+        "args": {
+          "order_id": 1842
+        }
+      },
+      {
+        "seq": 6,
+        "type": "tool_result",
+        "tool": "lookup_refunds",
+        "result": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "seq": 7,
+        "type": "tool_call",
+        "tool": "issue_refund",
+        "args": {
+          "refund_id": "R91"
+        }
+      },
+      {
+        "seq": 8,
+        "type": "tool_result",
+        "tool": "issue_refund",
+        "result": {
+          "ok": true,
+          "payout_id": 2,
+          "refund_id": "R91",
+          "prior_status": "COMPLETED"
+        }
+      },
+      {
+        "seq": 9,
+        "type": "tool_call",
+        "tool": "update_ticket",
+        "args": {
+          "ticket_id": 7,
+          "status": "RESOLVED"
+        }
+      },
+      {
+        "seq": 10,
+        "type": "tool_result",
+        "tool": "update_ticket",
+        "result": {
+          "ok": true,
+          "ticket_id": 7,
+          "status": "RESOLVED",
+          "note": "refund processed"
+        }
+      }
+    ],
+    "agent_version": "support-v1",
+    "task": {
+      "kind": "refund",
+      "customer": "Sarah Chen",
+      "requested_status": "PENDING",
+      "ticket_id": 7
+    },
+    "prompt": "Process the customer's pending refund."
+  },
+  "incident": {
+    "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+    "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+    "root_cause": "Policy matches by amount instead of status",
+    "violated_invariant": "refund.status must equal requested status",
+    "invariant": {
+      "check": "selected_initial_status",
+      "requested": "PENDING"
+    },
+    "diagnosis": {
+      "expected": "Select R92.",
+      "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+      "expected_entity": "R92",
+      "selected_entity": "R91",
+      "decision_signal": "amount=$80 (matched by amount, ignored status)",
+      "ignored_signal": "status=PENDING (should have filtered to R92)",
+      "failure_class": "WRONG_ENTITY_SELECTION",
+      "root_cause": "Policy matches by amount instead of status"
+    }
+  },
+  "fix_verification": {
+    "expected_behavior": "Select R92.",
+    "forbidden": [
+      "issue_refund(R91)"
+    ],
+    "invariant": {
+      "check": "selected_initial_status",
+      "requested": "PENDING"
+    },
+    "reproduce_by": "Run same agent against reconstructed world"
+  },
+  "source_run": "run_001",
+  "source_hash": "4b54c768e2d2415bf543aa36eebd9590bb6bb019cc262a91a4c4e10f9e78f4b3",
+  "freeze_hash": "0436b1085d501fc7e187080ca60ab0c2b5c584e3eb4bbef8c0ff37d2b8ee6749"
+}

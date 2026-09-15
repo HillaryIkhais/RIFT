@@ -1,0 +1,11 @@
+{
+  "replay_id": "rpl_005",
+  "incident_id": "inc_050",
+  "agent_version": "v1.0",
+  "result": "FAIL",
+  "failure_reproduced": true,
+  "violations": [
+    "illegal transition SHIPPED->CANCELLED on order 1843"
+  ],
+  "timestamp": "2026-09-15T20:01:25.652549+00:00"
+}

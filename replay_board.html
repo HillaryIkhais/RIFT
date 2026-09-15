@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><title>REPLAY board</title>
+<style>body{font-family:monospace;background:#0a0a0a;color:#e8e8e8;max-width:900px;margin:32px auto;padding:0 20px}
+table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #333;padding:6px 10px;text-align:left}
+.ok{color:#4ade80}.bad{color:#f87171}.dim{color:#888}</style></head><body>
+<h1>REPLAY board</h1>
+<h2>Runs</h2><table><tr><th>run</th><th>task</th><th>version</th><th>events</th></tr>
+<tr><td>run_001</td><td>refund</td><td>v1.0</td><td>10</td></tr><tr><td>run_004</td><td>address</td><td>v1.0</td><td>6</td></tr><tr><td>run_005</td><td>cancel</td><td>v1.0</td><td>4</td></tr>
+</table><h2>Regressions (frozen failures)</h2><table><tr><th>id</th><th>category</th><th>task</th><th>expected</th></tr>
+<tr><td>reg_047</td><td>WRONG_ENTITY_SELECTION</td><td>refund</td><td>Select R92.</td></tr><tr><td>reg_048</td><td>FORBIDDEN_SIDE_EFFECT</td><td>address</td><td>UPDATE_ADDRESS only.</td></tr><tr><td>reg_049</td><td>STATE_TRANSITION_VIOLATION</td><td>cancel</td><td>SHIPPED -> REFUND_REQUEST.</td></tr>
+</table><h2>Replays</h2><table><tr><th>replay</th><th>regression</th><th>version</th><th>result</th></tr>
+<tr><td>rpl_001</td><td>reg_047</td><td>v1.0</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_002</td><td>reg_047</td><td>v1.0-check</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_003</td><td>reg_047</td><td>v1.0</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_004</td><td>reg_048</td><td>v1.0</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_005</td><td>reg_049</td><td>v1.0</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_006</td><td>reg_047</td><td>v1.1</td><td><span class=ok>PASS</span></td></tr><tr><td>rpl_007</td><td>reg_048</td><td>v1.1</td><td><span class=ok>PASS</span></td></tr><tr><td>rpl_008</td><td>reg_049</td><td>v1.1</td><td><span class=ok>PASS</span></td></tr><tr><td>rpl_009</td><td>reg_047</td><td>v1.0-refund-revert</td><td><span class=bad>FAIL</span></td></tr><tr><td>rpl_010</td><td>reg_048</td><td>v1.0-refund-revert</td><td><span class=ok>PASS</span></td></tr><tr><td>rpl_011</td><td>reg_049</td><td>v1.0-refund-revert</td><td><span class=ok>PASS</span></td></tr>
+</table><h2>Promotion gates</h2><table><tr><th>version</th><th>score</th><th>verdict</th></tr>
+<tr><td>v1.0-check</td><td>0/1</td><td><span class=bad>PROMOTION_BLOCKED</span></td></tr><tr><td>v1.0-refund-revert</td><td>2/3</td><td><span class=bad>PROMOTION_BLOCKED</span></td></tr><tr><td>v1.0</td><td>0/3</td><td><span class=bad>PROMOTION_BLOCKED</span></td></tr><tr><td>v1.1</td><td>3/3</td><td><span class=ok>PROMOTION_APPROVED</span></td></tr>
+</table><p class=dim>Every failure makes the next version harder to break.</p></body></html>

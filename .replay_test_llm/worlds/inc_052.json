@@ -1,0 +1,143 @@
+{
+  "incident_id": "inc_052",
+  "category": "STATE_TRANSITION_VIOLATION",
+  "world": {
+    "state": {
+      "customers": [
+        {
+          "id": 42,
+          "name": "Sarah Chen",
+          "email": "sarah@x.com",
+          "address": "1 Main St"
+        }
+      ],
+      "orders": [
+        {
+          "id": 1842,
+          "customer_id": 42,
+          "amount_cents": 8000,
+          "status": "DELIVERED"
+        },
+        {
+          "id": 1843,
+          "customer_id": 42,
+          "amount_cents": 4500,
+          "status": "SHIPPED"
+        }
+      ],
+      "refunds": [
+        {
+          "id": "R91",
+          "order_id": 1842,
+          "amount_cents": 8000,
+          "status": "COMPLETED"
+        },
+        {
+          "id": "R92",
+          "order_id": 1842,
+          "amount_cents": 8000,
+          "status": "PENDING"
+        }
+      ],
+      "payouts": [
+        {
+          "id": 1,
+          "refund_id": "R91",
+          "amount_cents": 8000
+        }
+      ],
+      "tickets": [
+        {
+          "id": 9,
+          "customer_id": 42,
+          "message": "Cancel order 1843",
+          "status": "OPEN"
+        }
+      ],
+      "emails": []
+    },
+    "trajectory": [
+      {
+        "seq": 1,
+        "type": "tool_call",
+        "tool": "lookup_order",
+        "args": {
+          "customer_id": 42
+        }
+      },
+      {
+        "seq": 2,
+        "type": "tool_result",
+        "tool": "lookup_order",
+        "result": {
+          "id": 1843,
+          "customer_id": 42,
+          "amount_cents": 4500,
+          "status": "SHIPPED"
+        }
+      },
+      {
+        "seq": 3,
+        "type": "tool_call",
+        "tool": "cancel_order",
+        "args": {
+          "order_id": 1843
+        }
+      },
+      {
+        "seq": 4,
+        "type": "tool_result",
+        "tool": "cancel_order",
+        "result": {
+          "ok": true,
+          "order_id": 1843,
+          "prior_status": "SHIPPED",
+          "status": "CANCELLED"
+        }
+      }
+    ],
+    "agent_version": "t",
+    "task": {
+      "kind": "cancel",
+      "customer_id": 42,
+      "ticket_id": 9
+    },
+    "prompt": ""
+  },
+  "incident": {
+    "what_happened": "Agent cancelled shipped order 1843",
+    "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+    "root_cause": "Agent does not check order status before acting",
+    "violated_invariant": "SHIPPED must never transition to CANCELLED",
+    "invariant": {
+      "check": "no_transition",
+      "fro": "SHIPPED",
+      "to": "CANCELLED"
+    },
+    "diagnosis": {
+      "expected": "SHIPPED -> REFUND_REQUEST.",
+      "actual": "SHIPPED -> CANCELLED.",
+      "expected_entity": "escalate to refund request",
+      "selected_entity": "cancel_order(1843)",
+      "decision_signal": "order exists (agent did not check status before cancel)",
+      "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+      "failure_class": "STATE_TRANSITION_VIOLATION",
+      "root_cause": "Agent does not check order status before acting"
+    }
+  },
+  "fix_verification": {
+    "expected_behavior": "SHIPPED -> REFUND_REQUEST.",
+    "forbidden": [
+      "cancel_order(1843)"
+    ],
+    "invariant": {
+      "check": "no_transition",
+      "fro": "SHIPPED",
+      "to": "CANCELLED"
+    },
+    "reproduce_by": "Run same agent against reconstructed world"
+  },
+  "source_run": "run_012",
+  "source_hash": "619dedfb3a1905d9b1e90247356293bef8ba46f2f1378bfe375b3ffd65913b6e",
+  "freeze_hash": "94fcacd619ab00ec57d24bae086f8f5cc486c9153926ce41f157fc7f32931ccb"
+}

@@ -1,0 +1,11 @@
+{
+  "replay_id": "rpl_001",
+  "incident_id": "inc_047",
+  "agent_version": "llm-buggy",
+  "result": "FAIL",
+  "failure_reproduced": true,
+  "violations": [
+    "issued R91 whose initial status != PENDING"
+  ],
+  "timestamp": "2026-09-13T13:38:34.374303+00:00"
+}

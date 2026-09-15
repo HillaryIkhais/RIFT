@@ -1,0 +1,7 @@
+{
+  "agent_version": "fixed",
+  "total": 1,
+  "fixed": 1,
+  "still_broken": [],
+  "verdict": "FIX_VERIFIED"
+}

@@ -1,0 +1,12 @@
+{
+  "incident_id": "inc_047",
+  "run_id": "run_001",
+  "agent_version": "llm-buggy",
+  "category": "WRONG_ENTITY_SELECTION",
+  "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+  "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+  "root_cause": "Policy matches by amount instead of status",
+  "violated_invariant": "refund.status must equal requested status",
+  "run_hash": "c15562df12938f8b885c2d11723ff29b8b78254f1dd5a14b82fe9d8642650119",
+  "incident_hash": "8ea0ae18acf898b43b17b064589c5787e5286db3dbf79e03e696adec46e6833d"
+}

@@ -1,0 +1,140 @@
+{
+  "execution_id": "exec_e5d45fe8",
+  "intent": "Refund alice $100",
+  "verdict": "HUMAN_HOLD",
+  "goal": [
+    "refund:r1",
+    "status",
+    "succeeded"
+  ],
+  "contract": {
+    "effects": [
+      {
+        "entity": "refund:r1",
+        "field": "status",
+        "expected": "succeeded",
+        "op": "SET",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "refund:r1",
+        "field": "*",
+        "expected": "*",
+        "op": "CREATE",
+        "derived": false,
+        "required": false,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "balance",
+        "expected": [
+          "delta",
+          -100
+        ],
+        "op": "DELTA",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "audit:*",
+        "field": "*",
+        "expected": "*",
+        "op": "CREATE",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "plan",
+        "expected": "*",
+        "op": "SET",
+        "derived": false,
+        "required": false,
+        "recovery": "REVERSIBLE"
+      }
+    ],
+    "forbidden": [],
+    "scope": [
+      "refund:r1",
+      "customer:alice",
+      "audit:*"
+    ],
+    "max_amount_cents": null,
+    "operation_id": null,
+    "pinned": {
+      "customer:alice": 0,
+      "customer:bob": 0
+    }
+  },
+  "seed": {
+    "committed_ops": [],
+    "unobserved": 0,
+    "concurrent": [
+      [
+        "customer:alice",
+        "plan"
+      ]
+    ]
+  },
+  "before": {
+    "customer:alice": {
+      "balance": 1000,
+      "plan": "basic",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active"
+    },
+    "customer:bob": {
+      "balance": 500
+    }
+  },
+  "after": {
+    "customer:alice": {
+      "balance": 900,
+      "plan": "pro",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active",
+      "updated_at": "t1"
+    },
+    "customer:bob": {
+      "balance": 500
+    },
+    "refund:r1": {
+      "status": "succeeded"
+    },
+    "audit:e1": {
+      "kind": "refund",
+      "by": "agent"
+    }
+  },
+  "final": {
+    "customer:alice": {
+      "balance": 900,
+      "plan": "pro",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active",
+      "updated_at": "t1"
+    },
+    "customer:bob": {
+      "balance": 500
+    },
+    "refund:r1": {
+      "status": "succeeded"
+    },
+    "audit:e1": {
+      "kind": "refund",
+      "by": "agent"
+    }
+  },
+  "evidence": [
+    "HOLD: customer:alice externally modified during execution (stale read) -> cannot commit on moved state."
+  ],
+  "compensation": []
+}

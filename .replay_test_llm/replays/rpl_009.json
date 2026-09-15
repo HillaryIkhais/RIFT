@@ -1,0 +1,11 @@
+{
+  "replay_id": "rpl_009",
+  "incident_id": "inc_053",
+  "agent_version": "v",
+  "result": "FAIL",
+  "failure_reproduced": true,
+  "violations": [
+    "issued R91 whose initial status != PENDING"
+  ],
+  "timestamp": "2026-09-15T20:01:31.237503+00:00"
+}

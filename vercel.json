@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "rift_board/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/$", "dest": "/rift_board/index.html" },
+    { "src": "/dashboard", "dest": "/rift_board/dashboard.html" },
+    { "src": "/api/data", "dest": "/rift_board/app.json" },
+    { "src": "/(.*)", "dest": "/rift_board/$1" }
+  ]
+}

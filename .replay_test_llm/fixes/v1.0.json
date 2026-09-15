@@ -1,0 +1,11 @@
+{
+  "agent_version": "v1.0",
+  "total": 3,
+  "fixed": 0,
+  "still_broken": [
+    "inc_050",
+    "inc_051",
+    "inc_052"
+  ],
+  "verdict": "FIX_INCOMPLETE"
+}

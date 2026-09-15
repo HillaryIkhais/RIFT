@@ -1,0 +1,9 @@
+{
+  "agent_version": "llm-buggy",
+  "total": 1,
+  "fixed": 0,
+  "still_broken": [
+    "inc_047"
+  ],
+  "verdict": "FIX_INCOMPLETE"
+}

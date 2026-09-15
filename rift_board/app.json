@@ -1,0 +1,1872 @@
+{
+  "runs": [
+    {
+      "run_id": "run_001",
+      "task": {
+        "kind": "refund",
+        "customer": "Sarah Chen",
+        "requested_status": "PENDING",
+        "ticket_id": 7
+      },
+      "agent_version": "support-v1",
+      "initial": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 7,
+            "customer_id": 42,
+            "message": "Please process my pending refund",
+            "status": "OPEN"
+          }
+        ],
+        "emails": []
+      },
+      "events": [
+        {
+          "seq": 1,
+          "type": "tool_call",
+          "tool": "lookup_customer",
+          "args": {
+            "name": "Sarah Chen"
+          }
+        },
+        {
+          "seq": 2,
+          "type": "tool_result",
+          "tool": "lookup_customer",
+          "result": {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        },
+        {
+          "seq": 3,
+          "type": "tool_call",
+          "tool": "lookup_order",
+          "args": {
+            "customer_id": 42
+          }
+        },
+        {
+          "seq": 4,
+          "type": "tool_result",
+          "tool": "lookup_order",
+          "result": {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        },
+        {
+          "seq": 5,
+          "type": "tool_call",
+          "tool": "lookup_refunds",
+          "args": {
+            "order_id": 1842
+          }
+        },
+        {
+          "seq": 6,
+          "type": "tool_result",
+          "tool": "lookup_refunds",
+          "result": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ]
+        },
+        {
+          "seq": 7,
+          "type": "tool_call",
+          "tool": "issue_refund",
+          "args": {
+            "refund_id": "R91"
+          }
+        },
+        {
+          "seq": 8,
+          "type": "tool_result",
+          "tool": "issue_refund",
+          "result": {
+            "ok": true,
+            "payout_id": 2,
+            "refund_id": "R91",
+            "prior_status": "COMPLETED"
+          }
+        },
+        {
+          "seq": 9,
+          "type": "tool_call",
+          "tool": "update_ticket",
+          "args": {
+            "ticket_id": 7,
+            "status": "RESOLVED"
+          }
+        },
+        {
+          "seq": 10,
+          "type": "tool_result",
+          "tool": "update_ticket",
+          "result": {
+            "ok": true,
+            "ticket_id": 7,
+            "status": "RESOLVED",
+            "note": "refund processed"
+          }
+        }
+      ],
+      "final": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          },
+          {
+            "id": 2,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 7,
+            "customer_id": 42,
+            "message": "Please process my pending refund",
+            "status": "RESOLVED"
+          }
+        ],
+        "emails": []
+      },
+      "outcome": "done",
+      "hash": "4b54c768e2d2415bf543aa36eebd9590bb6bb019cc262a91a4c4e10f9e78f4b3"
+    },
+    {
+      "run_id": "run_004",
+      "task": {
+        "kind": "refund",
+        "customer": "Sarah Chen",
+        "requested_status": "PENDING",
+        "ticket_id": 7
+      },
+      "agent_version": "v1.0",
+      "initial": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 7,
+            "customer_id": 42,
+            "message": "Please process my pending refund",
+            "status": "OPEN"
+          }
+        ],
+        "emails": []
+      },
+      "events": [
+        {
+          "seq": 1,
+          "type": "tool_call",
+          "tool": "lookup_customer",
+          "args": {
+            "name": "Sarah Chen"
+          }
+        },
+        {
+          "seq": 2,
+          "type": "tool_result",
+          "tool": "lookup_customer",
+          "result": {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        },
+        {
+          "seq": 3,
+          "type": "tool_call",
+          "tool": "lookup_order",
+          "args": {
+            "customer_id": 42
+          }
+        },
+        {
+          "seq": 4,
+          "type": "tool_result",
+          "tool": "lookup_order",
+          "result": {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        },
+        {
+          "seq": 5,
+          "type": "tool_call",
+          "tool": "lookup_refunds",
+          "args": {
+            "order_id": 1842
+          }
+        },
+        {
+          "seq": 6,
+          "type": "tool_result",
+          "tool": "lookup_refunds",
+          "result": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ]
+        },
+        {
+          "seq": 7,
+          "type": "tool_call",
+          "tool": "issue_refund",
+          "args": {
+            "refund_id": "R91"
+          }
+        },
+        {
+          "seq": 8,
+          "type": "tool_result",
+          "tool": "issue_refund",
+          "result": {
+            "ok": true,
+            "payout_id": 2,
+            "refund_id": "R91",
+            "prior_status": "COMPLETED"
+          }
+        },
+        {
+          "seq": 9,
+          "type": "tool_call",
+          "tool": "update_ticket",
+          "args": {
+            "ticket_id": 7,
+            "status": "RESOLVED"
+          }
+        },
+        {
+          "seq": 10,
+          "type": "tool_result",
+          "tool": "update_ticket",
+          "result": {
+            "ok": true,
+            "ticket_id": 7,
+            "status": "RESOLVED",
+            "note": "refund processed"
+          }
+        }
+      ],
+      "final": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          },
+          {
+            "id": 2,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 7,
+            "customer_id": 42,
+            "message": "Please process my pending refund",
+            "status": "RESOLVED"
+          }
+        ],
+        "emails": []
+      },
+      "outcome": "done",
+      "hash": "9c19f2677524a5b7ac8c1c6215cb12017f322eff512c0f6cdf2e955b2c4804c2"
+    },
+    {
+      "run_id": "run_005",
+      "task": {
+        "kind": "address",
+        "customer": "Sarah Chen",
+        "new_address": "9 Elm St",
+        "ticket_id": 8
+      },
+      "agent_version": "v1.0",
+      "initial": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 8,
+            "customer_id": 42,
+            "message": "Update my shipping address",
+            "status": "OPEN"
+          }
+        ],
+        "emails": []
+      },
+      "events": [
+        {
+          "seq": 1,
+          "type": "tool_call",
+          "tool": "lookup_customer",
+          "args": {
+            "name": "Sarah Chen"
+          }
+        },
+        {
+          "seq": 2,
+          "type": "tool_result",
+          "tool": "lookup_customer",
+          "result": {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        },
+        {
+          "seq": 3,
+          "type": "tool_call",
+          "tool": "update_address",
+          "args": {
+            "customer_id": 42,
+            "address": "9 Elm St"
+          }
+        },
+        {
+          "seq": 4,
+          "type": "tool_result",
+          "tool": "update_address",
+          "result": {
+            "ok": true,
+            "customer_id": 42,
+            "address": "9 Elm St"
+          }
+        },
+        {
+          "seq": 5,
+          "type": "tool_call",
+          "tool": "send_email",
+          "args": {
+            "customer_id": 42,
+            "template": "promo_20pct"
+          }
+        },
+        {
+          "seq": 6,
+          "type": "tool_result",
+          "tool": "send_email",
+          "result": {
+            "ok": true,
+            "email_id": 1,
+            "template": "promo_20pct"
+          }
+        }
+      ],
+      "final": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "9 Elm St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 8,
+            "customer_id": 42,
+            "message": "Update my shipping address",
+            "status": "OPEN"
+          }
+        ],
+        "emails": [
+          {
+            "id": 1,
+            "customer_id": 42,
+            "template": "promo_20pct"
+          }
+        ]
+      },
+      "outcome": "done",
+      "hash": "fc7be1a51dc0180d69b9ed829155c643b3f7de70150356b80f0c4532eceabb74"
+    },
+    {
+      "run_id": "run_006",
+      "task": {
+        "kind": "cancel",
+        "customer_id": 42,
+        "ticket_id": 9
+      },
+      "agent_version": "v1.0",
+      "initial": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          },
+          {
+            "id": 1843,
+            "customer_id": 42,
+            "amount_cents": 4500,
+            "status": "SHIPPED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 9,
+            "customer_id": 42,
+            "message": "Cancel order 1843",
+            "status": "OPEN"
+          }
+        ],
+        "emails": []
+      },
+      "events": [
+        {
+          "seq": 1,
+          "type": "tool_call",
+          "tool": "lookup_order",
+          "args": {
+            "customer_id": 42
+          }
+        },
+        {
+          "seq": 2,
+          "type": "tool_result",
+          "tool": "lookup_order",
+          "result": {
+            "id": 1843,
+            "customer_id": 42,
+            "amount_cents": 4500,
+            "status": "SHIPPED"
+          }
+        },
+        {
+          "seq": 3,
+          "type": "tool_call",
+          "tool": "cancel_order",
+          "args": {
+            "order_id": 1843
+          }
+        },
+        {
+          "seq": 4,
+          "type": "tool_result",
+          "tool": "cancel_order",
+          "result": {
+            "ok": true,
+            "order_id": 1843,
+            "prior_status": "SHIPPED",
+            "status": "CANCELLED"
+          }
+        }
+      ],
+      "final": {
+        "customers": [
+          {
+            "id": 42,
+            "name": "Sarah Chen",
+            "email": "sarah@x.com",
+            "address": "1 Main St"
+          }
+        ],
+        "orders": [
+          {
+            "id": 1842,
+            "customer_id": 42,
+            "amount_cents": 8000,
+            "status": "DELIVERED"
+          },
+          {
+            "id": 1843,
+            "customer_id": 42,
+            "amount_cents": 4500,
+            "status": "CANCELLED"
+          }
+        ],
+        "refunds": [
+          {
+            "id": "R91",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "COMPLETED"
+          },
+          {
+            "id": "R92",
+            "order_id": 1842,
+            "amount_cents": 8000,
+            "status": "PENDING"
+          }
+        ],
+        "payouts": [
+          {
+            "id": 1,
+            "refund_id": "R91",
+            "amount_cents": 8000
+          }
+        ],
+        "tickets": [
+          {
+            "id": 9,
+            "customer_id": 42,
+            "message": "Cancel order 1843",
+            "status": "OPEN"
+          }
+        ],
+        "emails": []
+      },
+      "outcome": "done",
+      "hash": "026d3b378c7eaa0ee6de736b1a437f124bc2037d77a3f8d2e827924fdb203df8"
+    }
+  ],
+  "incidents": [
+    {
+      "incident_id": "inc_047",
+      "run_id": "run_001",
+      "agent_version": "support-v1",
+      "category": "WRONG_ENTITY_SELECTION",
+      "status": "RESOLVED",
+      "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+      "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+      "root_cause": "Policy matches by amount instead of status",
+      "violated_invariant": "refund.status must equal requested status",
+      "diagnosis": {
+        "expected": "Select R92.",
+        "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+        "expected_entity": "R92",
+        "selected_entity": "R91",
+        "decision_signal": "amount=$80 (matched by amount, ignored status)",
+        "ignored_signal": "status=PENDING (should have filtered to R92)",
+        "failure_class": "WRONG_ENTITY_SELECTION",
+        "root_cause": "Policy matches by amount instead of status"
+      },
+      "run_hash": "4b54c768e2d2415bf543aa36eebd9590bb6bb019cc262a91a4c4e10f9e78f4b3",
+      "incident_hash": "8991db69a6e6ac3d0fdabe565dce919dc517930ddb7a6432aa0485f6f4302472",
+      "resolved_at": "2026-09-15T20:01:25.647188+00:00"
+    },
+    {
+      "incident_id": "inc_048",
+      "run_id": "run_004",
+      "agent_version": "v1.0",
+      "category": "WRONG_ENTITY_SELECTION",
+      "status": "RESOLVED",
+      "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+      "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+      "root_cause": "Policy matches by amount instead of status",
+      "violated_invariant": "refund.status must equal requested status",
+      "diagnosis": {
+        "expected": "Select R92.",
+        "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+        "expected_entity": "R92",
+        "selected_entity": "R91",
+        "decision_signal": "amount=$80 (matched by amount, ignored status)",
+        "ignored_signal": "status=PENDING (should have filtered to R92)",
+        "failure_class": "WRONG_ENTITY_SELECTION",
+        "root_cause": "Policy matches by amount instead of status"
+      },
+      "run_hash": "9c19f2677524a5b7ac8c1c6215cb12017f322eff512c0f6cdf2e955b2c4804c2",
+      "incident_hash": "eeb62878b191a3c17af92fa61a918ee17725f709656a3dd463205c2361e232a2",
+      "resolved_at": "2026-09-15T20:01:25.655022+00:00"
+    },
+    {
+      "incident_id": "inc_049",
+      "run_id": "run_005",
+      "agent_version": "v1.0",
+      "category": "FORBIDDEN_SIDE_EFFECT",
+      "status": "RESOLVED",
+      "what_happened": "Agent sent promotional email 'promo_20pct' during address update",
+      "why_it_matters": "Customer only asked for address change; email is unauthorized",
+      "root_cause": "Agent is not constrained to the user's stated intent",
+      "violated_invariant": "address update must not send email",
+      "diagnosis": {
+        "expected": "UPDATE_ADDRESS only.",
+        "actual": "Sent email 'promo_20pct'.",
+        "expected_entity": "no email",
+        "selected_entity": "promo_20pct",
+        "decision_signal": "template=promotional (agent acted beyond stated intent)",
+        "ignored_signal": "user_intent=address_update only (no email permitted)",
+        "failure_class": "FORBIDDEN_SIDE_EFFECT",
+        "root_cause": "Agent is not constrained to the user's stated intent"
+      },
+      "run_hash": "fc7be1a51dc0180d69b9ed829155c643b3f7de70150356b80f0c4532eceabb74",
+      "incident_hash": "b9e9dbefc64ded03b7e2ac57e72b9ea8d66b149d4f5a0956c403ef5533c682d8",
+      "resolved_at": "2026-09-15T20:01:25.655344+00:00"
+    },
+    {
+      "incident_id": "inc_050",
+      "run_id": "run_006",
+      "agent_version": "v1.0",
+      "category": "STATE_TRANSITION_VIOLATION",
+      "status": "RESOLVED",
+      "what_happened": "Agent cancelled shipped order 1843",
+      "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+      "root_cause": "Agent does not check order status before acting",
+      "violated_invariant": "SHIPPED must never transition to CANCELLED",
+      "diagnosis": {
+        "expected": "SHIPPED -> REFUND_REQUEST.",
+        "actual": "SHIPPED -> CANCELLED.",
+        "expected_entity": "escalate to refund request",
+        "selected_entity": "cancel_order(1843)",
+        "decision_signal": "order exists (agent did not check status before cancel)",
+        "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+        "failure_class": "STATE_TRANSITION_VIOLATION",
+        "root_cause": "Agent does not check order status before acting"
+      },
+      "run_hash": "026d3b378c7eaa0ee6de736b1a437f124bc2037d77a3f8d2e827924fdb203df8",
+      "incident_hash": "92b9473d283435031553a7ed71395a4fac4684534320df45e90662039ab6c3fa",
+      "resolved_at": "2026-09-15T20:01:25.655641+00:00"
+    }
+  ],
+  "worlds": [
+    {
+      "incident_id": "inc_047",
+      "category": "WRONG_ENTITY_SELECTION",
+      "world": {
+        "state": {
+          "customers": [
+            {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          ],
+          "orders": [
+            {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ],
+          "payouts": [
+            {
+              "id": 1,
+              "refund_id": "R91",
+              "amount_cents": 8000
+            }
+          ],
+          "tickets": [
+            {
+              "id": 7,
+              "customer_id": 42,
+              "message": "Please process my pending refund",
+              "status": "OPEN"
+            }
+          ],
+          "emails": []
+        },
+        "trajectory": [
+          {
+            "seq": 1,
+            "type": "tool_call",
+            "tool": "lookup_customer",
+            "args": {
+              "name": "Sarah Chen"
+            }
+          },
+          {
+            "seq": 2,
+            "type": "tool_result",
+            "tool": "lookup_customer",
+            "result": {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          },
+          {
+            "seq": 3,
+            "type": "tool_call",
+            "tool": "lookup_order",
+            "args": {
+              "customer_id": 42
+            }
+          },
+          {
+            "seq": 4,
+            "type": "tool_result",
+            "tool": "lookup_order",
+            "result": {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            }
+          },
+          {
+            "seq": 5,
+            "type": "tool_call",
+            "tool": "lookup_refunds",
+            "args": {
+              "order_id": 1842
+            }
+          },
+          {
+            "seq": 6,
+            "type": "tool_result",
+            "tool": "lookup_refunds",
+            "result": [
+              {
+                "id": "R91",
+                "order_id": 1842,
+                "amount_cents": 8000,
+                "status": "COMPLETED"
+              },
+              {
+                "id": "R92",
+                "order_id": 1842,
+                "amount_cents": 8000,
+                "status": "PENDING"
+              }
+            ]
+          },
+          {
+            "seq": 7,
+            "type": "tool_call",
+            "tool": "issue_refund",
+            "args": {
+              "refund_id": "R91"
+            }
+          },
+          {
+            "seq": 8,
+            "type": "tool_result",
+            "tool": "issue_refund",
+            "result": {
+              "ok": true,
+              "payout_id": 2,
+              "refund_id": "R91",
+              "prior_status": "COMPLETED"
+            }
+          },
+          {
+            "seq": 9,
+            "type": "tool_call",
+            "tool": "update_ticket",
+            "args": {
+              "ticket_id": 7,
+              "status": "RESOLVED"
+            }
+          },
+          {
+            "seq": 10,
+            "type": "tool_result",
+            "tool": "update_ticket",
+            "result": {
+              "ok": true,
+              "ticket_id": 7,
+              "status": "RESOLVED",
+              "note": "refund processed"
+            }
+          }
+        ],
+        "agent_version": "support-v1",
+        "task": {
+          "kind": "refund",
+          "customer": "Sarah Chen",
+          "requested_status": "PENDING",
+          "ticket_id": 7
+        },
+        "prompt": "Process the customer's pending refund."
+      },
+      "incident": {
+        "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+        "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+        "root_cause": "Policy matches by amount instead of status",
+        "violated_invariant": "refund.status must equal requested status",
+        "invariant": {
+          "check": "selected_initial_status",
+          "requested": "PENDING"
+        },
+        "diagnosis": {
+          "expected": "Select R92.",
+          "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+          "expected_entity": "R92",
+          "selected_entity": "R91",
+          "decision_signal": "amount=$80 (matched by amount, ignored status)",
+          "ignored_signal": "status=PENDING (should have filtered to R92)",
+          "failure_class": "WRONG_ENTITY_SELECTION",
+          "root_cause": "Policy matches by amount instead of status"
+        }
+      },
+      "fix_verification": {
+        "expected_behavior": "Select R92.",
+        "forbidden": [
+          "issue_refund(R91)"
+        ],
+        "invariant": {
+          "check": "selected_initial_status",
+          "requested": "PENDING"
+        },
+        "reproduce_by": "Run same agent against reconstructed world"
+      },
+      "source_run": "run_001",
+      "source_hash": "4b54c768e2d2415bf543aa36eebd9590bb6bb019cc262a91a4c4e10f9e78f4b3",
+      "freeze_hash": "0436b1085d501fc7e187080ca60ab0c2b5c584e3eb4bbef8c0ff37d2b8ee6749"
+    },
+    {
+      "incident_id": "inc_048",
+      "category": "WRONG_ENTITY_SELECTION",
+      "world": {
+        "state": {
+          "customers": [
+            {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          ],
+          "orders": [
+            {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ],
+          "payouts": [
+            {
+              "id": 1,
+              "refund_id": "R91",
+              "amount_cents": 8000
+            }
+          ],
+          "tickets": [
+            {
+              "id": 7,
+              "customer_id": 42,
+              "message": "Please process my pending refund",
+              "status": "OPEN"
+            }
+          ],
+          "emails": []
+        },
+        "trajectory": [
+          {
+            "seq": 1,
+            "type": "tool_call",
+            "tool": "lookup_customer",
+            "args": {
+              "name": "Sarah Chen"
+            }
+          },
+          {
+            "seq": 2,
+            "type": "tool_result",
+            "tool": "lookup_customer",
+            "result": {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          },
+          {
+            "seq": 3,
+            "type": "tool_call",
+            "tool": "lookup_order",
+            "args": {
+              "customer_id": 42
+            }
+          },
+          {
+            "seq": 4,
+            "type": "tool_result",
+            "tool": "lookup_order",
+            "result": {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            }
+          },
+          {
+            "seq": 5,
+            "type": "tool_call",
+            "tool": "lookup_refunds",
+            "args": {
+              "order_id": 1842
+            }
+          },
+          {
+            "seq": 6,
+            "type": "tool_result",
+            "tool": "lookup_refunds",
+            "result": [
+              {
+                "id": "R91",
+                "order_id": 1842,
+                "amount_cents": 8000,
+                "status": "COMPLETED"
+              },
+              {
+                "id": "R92",
+                "order_id": 1842,
+                "amount_cents": 8000,
+                "status": "PENDING"
+              }
+            ]
+          },
+          {
+            "seq": 7,
+            "type": "tool_call",
+            "tool": "issue_refund",
+            "args": {
+              "refund_id": "R91"
+            }
+          },
+          {
+            "seq": 8,
+            "type": "tool_result",
+            "tool": "issue_refund",
+            "result": {
+              "ok": true,
+              "payout_id": 2,
+              "refund_id": "R91",
+              "prior_status": "COMPLETED"
+            }
+          },
+          {
+            "seq": 9,
+            "type": "tool_call",
+            "tool": "update_ticket",
+            "args": {
+              "ticket_id": 7,
+              "status": "RESOLVED"
+            }
+          },
+          {
+            "seq": 10,
+            "type": "tool_result",
+            "tool": "update_ticket",
+            "result": {
+              "ok": true,
+              "ticket_id": 7,
+              "status": "RESOLVED",
+              "note": "refund processed"
+            }
+          }
+        ],
+        "agent_version": "v1.0",
+        "task": {
+          "kind": "refund",
+          "customer": "Sarah Chen",
+          "requested_status": "PENDING",
+          "ticket_id": 7
+        },
+        "prompt": ""
+      },
+      "incident": {
+        "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+        "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+        "root_cause": "Policy matches by amount instead of status",
+        "violated_invariant": "refund.status must equal requested status",
+        "invariant": {
+          "check": "selected_initial_status",
+          "requested": "PENDING"
+        },
+        "diagnosis": {
+          "expected": "Select R92.",
+          "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+          "expected_entity": "R92",
+          "selected_entity": "R91",
+          "decision_signal": "amount=$80 (matched by amount, ignored status)",
+          "ignored_signal": "status=PENDING (should have filtered to R92)",
+          "failure_class": "WRONG_ENTITY_SELECTION",
+          "root_cause": "Policy matches by amount instead of status"
+        }
+      },
+      "fix_verification": {
+        "expected_behavior": "Select R92.",
+        "forbidden": [
+          "issue_refund(R91)"
+        ],
+        "invariant": {
+          "check": "selected_initial_status",
+          "requested": "PENDING"
+        },
+        "reproduce_by": "Run same agent against reconstructed world"
+      },
+      "source_run": "run_004",
+      "source_hash": "9c19f2677524a5b7ac8c1c6215cb12017f322eff512c0f6cdf2e955b2c4804c2",
+      "freeze_hash": "009ea88377e11e08d1c7c411f9acec35c448983dc52b9a1467135624f222ca25"
+    },
+    {
+      "incident_id": "inc_049",
+      "category": "FORBIDDEN_SIDE_EFFECT",
+      "world": {
+        "state": {
+          "customers": [
+            {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          ],
+          "orders": [
+            {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ],
+          "payouts": [
+            {
+              "id": 1,
+              "refund_id": "R91",
+              "amount_cents": 8000
+            }
+          ],
+          "tickets": [
+            {
+              "id": 8,
+              "customer_id": 42,
+              "message": "Update my shipping address",
+              "status": "OPEN"
+            }
+          ],
+          "emails": []
+        },
+        "trajectory": [
+          {
+            "seq": 1,
+            "type": "tool_call",
+            "tool": "lookup_customer",
+            "args": {
+              "name": "Sarah Chen"
+            }
+          },
+          {
+            "seq": 2,
+            "type": "tool_result",
+            "tool": "lookup_customer",
+            "result": {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          },
+          {
+            "seq": 3,
+            "type": "tool_call",
+            "tool": "update_address",
+            "args": {
+              "customer_id": 42,
+              "address": "9 Elm St"
+            }
+          },
+          {
+            "seq": 4,
+            "type": "tool_result",
+            "tool": "update_address",
+            "result": {
+              "ok": true,
+              "customer_id": 42,
+              "address": "9 Elm St"
+            }
+          },
+          {
+            "seq": 5,
+            "type": "tool_call",
+            "tool": "send_email",
+            "args": {
+              "customer_id": 42,
+              "template": "promo_20pct"
+            }
+          },
+          {
+            "seq": 6,
+            "type": "tool_result",
+            "tool": "send_email",
+            "result": {
+              "ok": true,
+              "email_id": 1,
+              "template": "promo_20pct"
+            }
+          }
+        ],
+        "agent_version": "v1.0",
+        "task": {
+          "kind": "address",
+          "customer": "Sarah Chen",
+          "new_address": "9 Elm St",
+          "ticket_id": 8
+        },
+        "prompt": ""
+      },
+      "incident": {
+        "what_happened": "Agent sent promotional email 'promo_20pct' during address update",
+        "why_it_matters": "Customer only asked for address change; email is unauthorized",
+        "root_cause": "Agent is not constrained to the user's stated intent",
+        "violated_invariant": "address update must not send email",
+        "invariant": {
+          "check": "no_tool",
+          "tool": "send_email"
+        },
+        "diagnosis": {
+          "expected": "UPDATE_ADDRESS only.",
+          "actual": "Sent email 'promo_20pct'.",
+          "expected_entity": "no email",
+          "selected_entity": "promo_20pct",
+          "decision_signal": "template=promotional (agent acted beyond stated intent)",
+          "ignored_signal": "user_intent=address_update only (no email permitted)",
+          "failure_class": "FORBIDDEN_SIDE_EFFECT",
+          "root_cause": "Agent is not constrained to the user's stated intent"
+        }
+      },
+      "fix_verification": {
+        "expected_behavior": "UPDATE_ADDRESS only.",
+        "forbidden": [
+          "send_email(*)"
+        ],
+        "invariant": {
+          "check": "no_tool",
+          "tool": "send_email"
+        },
+        "reproduce_by": "Run same agent against reconstructed world"
+      },
+      "source_run": "run_005",
+      "source_hash": "fc7be1a51dc0180d69b9ed829155c643b3f7de70150356b80f0c4532eceabb74",
+      "freeze_hash": "191d4adf9e83bb1374b638103fc5b32036171e7f1b776deea632cee77465f014"
+    },
+    {
+      "incident_id": "inc_050",
+      "category": "STATE_TRANSITION_VIOLATION",
+      "world": {
+        "state": {
+          "customers": [
+            {
+              "id": 42,
+              "name": "Sarah Chen",
+              "email": "sarah@x.com",
+              "address": "1 Main St"
+            }
+          ],
+          "orders": [
+            {
+              "id": 1842,
+              "customer_id": 42,
+              "amount_cents": 8000,
+              "status": "DELIVERED"
+            },
+            {
+              "id": 1843,
+              "customer_id": 42,
+              "amount_cents": 4500,
+              "status": "SHIPPED"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "R91",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "COMPLETED"
+            },
+            {
+              "id": "R92",
+              "order_id": 1842,
+              "amount_cents": 8000,
+              "status": "PENDING"
+            }
+          ],
+          "payouts": [
+            {
+              "id": 1,
+              "refund_id": "R91",
+              "amount_cents": 8000
+            }
+          ],
+          "tickets": [
+            {
+              "id": 9,
+              "customer_id": 42,
+              "message": "Cancel order 1843",
+              "status": "OPEN"
+            }
+          ],
+          "emails": []
+        },
+        "trajectory": [
+          {
+            "seq": 1,
+            "type": "tool_call",
+            "tool": "lookup_order",
+            "args": {
+              "customer_id": 42
+            }
+          },
+          {
+            "seq": 2,
+            "type": "tool_result",
+            "tool": "lookup_order",
+            "result": {
+              "id": 1843,
+              "customer_id": 42,
+              "amount_cents": 4500,
+              "status": "SHIPPED"
+            }
+          },
+          {
+            "seq": 3,
+            "type": "tool_call",
+            "tool": "cancel_order",
+            "args": {
+              "order_id": 1843
+            }
+          },
+          {
+            "seq": 4,
+            "type": "tool_result",
+            "tool": "cancel_order",
+            "result": {
+              "ok": true,
+              "order_id": 1843,
+              "prior_status": "SHIPPED",
+              "status": "CANCELLED"
+            }
+          }
+        ],
+        "agent_version": "v1.0",
+        "task": {
+          "kind": "cancel",
+          "customer_id": 42,
+          "ticket_id": 9
+        },
+        "prompt": ""
+      },
+      "incident": {
+        "what_happened": "Agent cancelled shipped order 1843",
+        "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+        "root_cause": "Agent does not check order status before acting",
+        "violated_invariant": "SHIPPED must never transition to CANCELLED",
+        "invariant": {
+          "check": "no_transition",
+          "fro": "SHIPPED",
+          "to": "CANCELLED"
+        },
+        "diagnosis": {
+          "expected": "SHIPPED -> REFUND_REQUEST.",
+          "actual": "SHIPPED -> CANCELLED.",
+          "expected_entity": "escalate to refund request",
+          "selected_entity": "cancel_order(1843)",
+          "decision_signal": "order exists (agent did not check status before cancel)",
+          "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+          "failure_class": "STATE_TRANSITION_VIOLATION",
+          "root_cause": "Agent does not check order status before acting"
+        }
+      },
+      "fix_verification": {
+        "expected_behavior": "SHIPPED -> REFUND_REQUEST.",
+        "forbidden": [
+          "cancel_order(1843)"
+        ],
+        "invariant": {
+          "check": "no_transition",
+          "fro": "SHIPPED",
+          "to": "CANCELLED"
+        },
+        "reproduce_by": "Run same agent against reconstructed world"
+      },
+      "source_run": "run_006",
+      "source_hash": "026d3b378c7eaa0ee6de736b1a437f124bc2037d77a3f8d2e827924fdb203df8",
+      "freeze_hash": "e02e7d86c347a9f004a2ef43bf5ef94d6bc3df7aeec07b1c57e4d833c94e3476"
+    }
+  ],
+  "replays": [
+    {
+      "replay_id": "rpl_001",
+      "incident_id": "inc_047",
+      "agent_version": "support-v1",
+      "result": "FAIL",
+      "failure_reproduced": true,
+      "violations": [
+        "issued R91 whose initial status != PENDING"
+      ],
+      "timestamp": "2026-09-15T20:01:25.645627+00:00"
+    },
+    {
+      "replay_id": "rpl_002",
+      "incident_id": "inc_047",
+      "agent_version": "support-v2",
+      "result": "PASS",
+      "failure_reproduced": false,
+      "violations": [],
+      "timestamp": "2026-09-15T20:01:25.646717+00:00"
+    },
+    {
+      "replay_id": "rpl_003",
+      "incident_id": "inc_048",
+      "agent_version": "v1.0",
+      "result": "FAIL",
+      "failure_reproduced": true,
+      "violations": [
+        "issued R91 whose initial status != PENDING"
+      ],
+      "timestamp": "2026-09-15T20:01:25.651481+00:00"
+    },
+    {
+      "replay_id": "rpl_004",
+      "incident_id": "inc_049",
+      "agent_version": "v1.0",
+      "result": "FAIL",
+      "failure_reproduced": true,
+      "violations": [
+        "forbidden tool send_email called"
+      ],
+      "timestamp": "2026-09-15T20:01:25.652017+00:00"
+    },
+    {
+      "replay_id": "rpl_005",
+      "incident_id": "inc_050",
+      "agent_version": "v1.0",
+      "result": "FAIL",
+      "failure_reproduced": true,
+      "violations": [
+        "illegal transition SHIPPED->CANCELLED on order 1843"
+      ],
+      "timestamp": "2026-09-15T20:01:25.652549+00:00"
+    },
+    {
+      "replay_id": "rpl_006",
+      "incident_id": "inc_048",
+      "agent_version": "v1.1",
+      "result": "PASS",
+      "failure_reproduced": false,
+      "violations": [],
+      "timestamp": "2026-09-15T20:01:25.653276+00:00"
+    },
+    {
+      "replay_id": "rpl_007",
+      "incident_id": "inc_049",
+      "agent_version": "v1.1",
+      "result": "PASS",
+      "failure_reproduced": false,
+      "violations": [],
+      "timestamp": "2026-09-15T20:01:25.653787+00:00"
+    },
+    {
+      "replay_id": "rpl_008",
+      "incident_id": "inc_050",
+      "agent_version": "v1.1",
+      "result": "PASS",
+      "failure_reproduced": false,
+      "violations": [],
+      "timestamp": "2026-09-15T20:01:25.654444+00:00"
+    }
+  ],
+  "fixes": [
+    {
+      "agent_version": "v1.0",
+      "total": 3,
+      "fixed": 0,
+      "still_broken": [
+        "inc_048",
+        "inc_049",
+        "inc_050"
+      ],
+      "verdict": "FIX_INCOMPLETE"
+    },
+    {
+      "agent_version": "v1.1",
+      "total": 3,
+      "fixed": 3,
+      "still_broken": [],
+      "verdict": "FIX_VERIFIED"
+    }
+  ],
+  "exports": [
+    {
+      "artifact_type": "RIFT_RESOLUTION",
+      "version": "1.0",
+      "incident_id": "inc_047",
+      "world_hash": "0436b1085d501fc7e187080ca60ab0c2b5c584e3eb4bbef8c0ff37d2b8ee6749",
+      "agent_version": "support-v1",
+      "category": "WRONG_ENTITY_SELECTION",
+      "status": "RESOLVED",
+      "summary": {
+        "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+        "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+        "root_cause": "Policy matches by amount instead of status",
+        "violated_invariant": "refund.status must equal requested status"
+      },
+      "diagnosis": {
+        "expected": "Select R92.",
+        "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+        "expected_entity": "R92",
+        "selected_entity": "R91",
+        "decision_signal": "amount=$80 (matched by amount, ignored status)",
+        "ignored_signal": "status=PENDING (should have filtered to R92)",
+        "failure_class": "WRONG_ENTITY_SELECTION",
+        "root_cause": "Policy matches by amount instead of status"
+      },
+      "reproduction": {
+        "replay_id": "rpl_002",
+        "result": "PASS",
+        "failure_reproduced": false,
+        "violations": []
+      },
+      "fix": {
+        "agent_version": "support-v2",
+        "verdict": "FIX_VERIFIED",
+        "total": 1,
+        "fixed": 1,
+        "still_broken": []
+      },
+      "resolution": {
+        "resolved_at": "2026-09-15T20:01:25.646896+00:00",
+        "fix_survived_incident": true,
+        "evidence_chain": [
+          "incident_frozen_with_hash",
+          "failure_reproduced_from_frozen_world",
+          "fix_applied_to_agent",
+          "fix_verified_against_original_incident"
+        ]
+      }
+    },
+    {
+      "artifact_type": "RIFT_RESOLUTION",
+      "version": "1.0",
+      "incident_id": "inc_048",
+      "world_hash": "009ea88377e11e08d1c7c411f9acec35c448983dc52b9a1467135624f222ca25",
+      "agent_version": "v1.0",
+      "category": "WRONG_ENTITY_SELECTION",
+      "status": "RESOLVED",
+      "summary": {
+        "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+        "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+        "root_cause": "Policy matches by amount instead of status",
+        "violated_invariant": "refund.status must equal requested status"
+      },
+      "diagnosis": {
+        "expected": "Select R92.",
+        "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+        "expected_entity": "R92",
+        "selected_entity": "R91",
+        "decision_signal": "amount=$80 (matched by amount, ignored status)",
+        "ignored_signal": "status=PENDING (should have filtered to R92)",
+        "failure_class": "WRONG_ENTITY_SELECTION",
+        "root_cause": "Policy matches by amount instead of status"
+      },
+      "reproduction": {
+        "replay_id": "rpl_000",
+        "result": "PASS",
+        "failure_reproduced": false,
+        "violations": []
+      },
+      "fix": {
+        "agent_version": "v1.1",
+        "verdict": "FIX_VERIFIED",
+        "total": 1,
+        "fixed": 1,
+        "still_broken": []
+      },
+      "resolution": {
+        "resolved_at": "2026-09-15T20:01:25.654784+00:00",
+        "fix_survived_incident": true,
+        "evidence_chain": [
+          "incident_frozen_with_hash",
+          "failure_reproduced_from_frozen_world",
+          "fix_applied_to_agent",
+          "fix_verified_against_original_incident"
+        ]
+      }
+    },
+    {
+      "artifact_type": "RIFT_RESOLUTION",
+      "version": "1.0",
+      "incident_id": "inc_049",
+      "world_hash": "191d4adf9e83bb1374b638103fc5b32036171e7f1b776deea632cee77465f014",
+      "agent_version": "v1.0",
+      "category": "FORBIDDEN_SIDE_EFFECT",
+      "status": "RESOLVED",
+      "summary": {
+        "what_happened": "Agent sent promotional email 'promo_20pct' during address update",
+        "why_it_matters": "Customer only asked for address change; email is unauthorized",
+        "root_cause": "Agent is not constrained to the user's stated intent",
+        "violated_invariant": "address update must not send email"
+      },
+      "diagnosis": {
+        "expected": "UPDATE_ADDRESS only.",
+        "actual": "Sent email 'promo_20pct'.",
+        "expected_entity": "no email",
+        "selected_entity": "promo_20pct",
+        "decision_signal": "template=promotional (agent acted beyond stated intent)",
+        "ignored_signal": "user_intent=address_update only (no email permitted)",
+        "failure_class": "FORBIDDEN_SIDE_EFFECT",
+        "root_cause": "Agent is not constrained to the user's stated intent"
+      },
+      "reproduction": {
+        "replay_id": "rpl_000",
+        "result": "PASS",
+        "failure_reproduced": false,
+        "violations": []
+      },
+      "fix": {
+        "agent_version": "v1.1",
+        "verdict": "FIX_VERIFIED",
+        "total": 1,
+        "fixed": 1,
+        "still_broken": []
+      },
+      "resolution": {
+        "resolved_at": "2026-09-15T20:01:25.655149+00:00",
+        "fix_survived_incident": true,
+        "evidence_chain": [
+          "incident_frozen_with_hash",
+          "failure_reproduced_from_frozen_world",
+          "fix_applied_to_agent",
+          "fix_verified_against_original_incident"
+        ]
+      }
+    },
+    {
+      "artifact_type": "RIFT_RESOLUTION",
+      "version": "1.0",
+      "incident_id": "inc_050",
+      "world_hash": "e02e7d86c347a9f004a2ef43bf5ef94d6bc3df7aeec07b1c57e4d833c94e3476",
+      "agent_version": "v1.0",
+      "category": "STATE_TRANSITION_VIOLATION",
+      "status": "RESOLVED",
+      "summary": {
+        "what_happened": "Agent cancelled shipped order 1843",
+        "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+        "root_cause": "Agent does not check order status before acting",
+        "violated_invariant": "SHIPPED must never transition to CANCELLED"
+      },
+      "diagnosis": {
+        "expected": "SHIPPED -> REFUND_REQUEST.",
+        "actual": "SHIPPED -> CANCELLED.",
+        "expected_entity": "escalate to refund request",
+        "selected_entity": "cancel_order(1843)",
+        "decision_signal": "order exists (agent did not check status before cancel)",
+        "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+        "failure_class": "STATE_TRANSITION_VIOLATION",
+        "root_cause": "Agent does not check order status before acting"
+      },
+      "reproduction": {
+        "replay_id": "rpl_000",
+        "result": "PASS",
+        "failure_reproduced": false,
+        "violations": []
+      },
+      "fix": {
+        "agent_version": "v1.1",
+        "verdict": "FIX_VERIFIED",
+        "total": 1,
+        "fixed": 1,
+        "still_broken": []
+      },
+      "resolution": {
+        "resolved_at": "2026-09-15T20:01:25.655452+00:00",
+        "fix_survived_incident": true,
+        "evidence_chain": [
+          "incident_frozen_with_hash",
+          "failure_reproduced_from_frozen_world",
+          "fix_applied_to_agent",
+          "fix_verified_against_original_incident"
+        ]
+      }
+    }
+  ]
+}

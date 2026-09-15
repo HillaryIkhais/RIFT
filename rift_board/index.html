@@ -1,0 +1,342 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>RIFT - Incident Reconstruction for AI Agents</title><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#FAFAF8;color:#1A1A1A;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:#D64040;color:#fff}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(214,64,64,.5)}50%{box-shadow:0 0 0 12px rgba(214,64,64,0)}}
+@keyframes glow{0%,100%{text-shadow:0 0 6px rgba(214,64,64,.3)}50%{text-shadow:0 0 20px rgba(214,64,64,.6)}}
+@keyframes scanLine{0%{top:-10%}100%{top:110%}}
+@keyframes typewriter{from{width:0}to{width:100%}}
+@keyframes blink{50%{border-color:transparent}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-2px)}20%,40%,60%,80%{transform:translateX(2px)}}
+@keyframes ripple{0%{transform:scale(0);opacity:1}100%{transform:scale(4);opacity:0}}
+@keyframes gridPulse{0%,100%{opacity:.03}50%{opacity:.08}}
+@keyframes stepGlow{0%{box-shadow:0 0 0 0 rgba(214,64,64,.4)}50%{box-shadow:0 0 30px 4px rgba(214,64,64,.15)}100%{box-shadow:0 0 0 0 rgba(214,64,64,0)}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;border-bottom:3px solid #1A1A1A;background:#FFFFFF;position:relative;z-index:10}
+.logo{font-size:22px;font-weight:900;letter-spacing:-1px;text-decoration:none;color:#1A1A1A}
+.logo span{color:#D64040}
+.nav{display:flex;gap:8px}
+.nav a{padding:8px 16px;border:2px solid #1A1A1A;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-decoration:none;color:#1A1A1A;transition:all .15s ease}
+.nav a:hover{box-shadow:3px 3px 0 #1A1A1A;transform:translate(-2px,-2px);background:#F0F0EE}
+.nav a.active{background:#1A1A1A;color:#fff}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(#1A1A1A 1px,transparent 1px),linear-gradient(90deg,#1A1A1A 1px,transparent 1px);background-size:60px 60px;opacity:.04;animation:gridPulse 8s ease-in-out infinite}
+.hero-dots{position:absolute;inset:0}
+.hero-dot{position:absolute;width:4px;height:4px;background:#D64040;border-radius:50%;opacity:.15;animation:float 6s ease-in-out infinite}
+.hero-inner{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:80px 40px;width:100%}
+.hero-text{animation:fadeUp .8s ease-out forwards;width:100%}
+.hero h1{font-size:240px !important;font-weight:900;line-height:1.0;letter-spacing:-10px;margin-bottom:28px}
+.hero h1 .line{display:block;overflow:visible}
+.hero h1 .line span{display:inline-block;animation:fadeUp .6s ease-out forwards}
+.hero h1 .line:nth-child(2) span{animation-delay:.15s}
+.hero h1 .line:nth-child(3) span{animation-delay:.3s}
+.hero h1 em{font-style:normal !important;color:#D64040 !important;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:4px;background:#D64040;transform:scaleX(0);transform-origin:left;animation:scaleIn .4s ease-out .8s forwards}
+.hero p{font-size:19px;line-height:1.7;color:#999999;margin-bottom:36px;max-width:500px;animation:fadeUp .6s ease-out .3s forwards;opacity:0}
+.hero-btns{display:flex;gap:14px;animation:fadeUp .6s ease-out .45s forwards;opacity:0}
+.btn{padding:16px 32px;font-family:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;text-decoration:none;display:inline-block;border:3px solid #1A1A1A;transition:all .15s ease;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:#1A1A1A;transform:scaleX(0);transform-origin:left;transition:transform .2s ease;z-index:0}
+.btn span{position:relative;z-index:1}
+.btn-fill{background:#1A1A1A;color:#fff;box-shadow:5px 5px 0 #1A1A1A}
+.btn-fill:hover{box-shadow:8px 8px 0 #1A1A1A;transform:translate(-3px,-3px)}
+.btn-ghost{background:transparent;color:#1A1A1A;box-shadow:5px 5px 0 #1A1A1A}
+.btn-ghost:hover{box-shadow:8px 8px 0 #1A1A1A;transform:translate(-3px,-3px)}
+.demo{border:3px solid #1A1A1A;box-shadow:10px 10px 0 #1A1A1A;background:#FFFFFF;display:flex;flex-direction:column;max-width:600px}
+.demo-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:3px solid #1A1A1A;background:#F0F0EE}
+.demo-header h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px}
+.demo-dots{display:flex;gap:5px}
+.demo-dot{width:10px;height:10px;border-radius:50%;border:2px solid #1A1A1A;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.demo-dot.done{background:#1A1A1A;border-color:#1A1A1A;transform:scale(1.1)}
+.demo-dot.active{background:#D64040;border-color:#D64040;animation:pulse 2s infinite;transform:scale(1.2)}
+.demo-content{padding:28px 24px;min-height:360px;position:relative;overflow:hidden}
+.step-card{animation:fadeUp .35s cubic-bezier(.4,0,.2,1) forwards}
+.step-num{font-size:64px;font-weight:900;color:#F0F0EE;line-height:1;margin-bottom:4px;animation:countUp .3s ease-out forwards}
+.step-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;margin-bottom:8px}
+.step-title.t-fail,.step-title.t-rift,.step-title.t-diagnose{color:#D64040}
+.step-title.t-fix,.step-title.t-verify,.step-title.t-resolve{color:#2D8A4E}
+.step-title.t-capture,.step-title.t-freeze,.step-title.t-reconstruct{color:#1A1A1A}
+.step-text{font-size:14px;line-height:1.7;color:#1A1A1A;margin-bottom:18px}
+.step-detail{font-family:'JetBrains Mono',monospace;font-size:11px;padding:16px 18px;border:2px solid #1A1A1A;background:#F0F0EE;line-height:1.9;animation:scaleIn .3s ease-out .1s forwards;opacity:0;position:relative}
+.step-detail::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#D64040}
+.step-detail .k{color:#999999}
+.step-detail .v{color:#1A1A1A;font-weight:600}
+.step-detail .err{color:#D64040;font-weight:700}
+.step-detail .ok{color:#2D8A4E;font-weight:700}
+.demo-footer{display:flex;border-top:3px solid #1A1A1A}
+.demo-footer button{flex:1;padding:14px;font-family:inherit;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:none;border-right:3px solid #1A1A1A;cursor:pointer;background:transparent;transition:all .15s ease}
+.demo-footer button:last-child{border-right:none}
+.demo-footer button:hover{background:#1A1A1A;color:#fff}
+.demo-footer button:active{transform:scale(.97)}
+.demo-footer button:disabled{opacity:.2;cursor:default;transform:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.section{padding:100px 0}
+.sec-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:#999999;margin-bottom:8px}
+.section h2{font-size:38px;font-weight:900;letter-spacing:-1px;margin-bottom:16px}
+.section h2 em{font-style:normal;color:#D64040}
+.section .sub{font-size:16px;color:#999999;line-height:1.7;max-width:540px;margin-bottom:40px}
+.loop{display:flex;flex-wrap:wrap;gap:0;position:relative}
+.ls{flex:1;min-width:100px;padding:18px 14px;border:3px solid #1A1A1A;margin-right:-3px;margin-bottom:-3px;transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;background:#FFFFFF}
+.ls:last-child{margin-right:0}
+.ls:hover{background:#1A1A1A;color:#fff;z-index:2;transform:translateY(-4px);box-shadow:0 8px 0 #1A1A1A}
+.ls:hover small{color:rgba(255,255,255,.6)}
+.ls:hover .ls-arrow{color:rgba(255,255,255,.4)}
+.ls strong{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+.ls small{font-size:10px;color:#999999;display:block}
+.ls-arrow{position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:14px;color:#999999;z-index:3;transition:color .2s}
+.ls:last-child .ls-arrow{display:none}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:3px solid #1A1A1A;box-shadow:5px 5px 0 #1A1A1A;padding:28px;background:#FFFFFF;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.card:hover{box-shadow:8px 8px 0 #1A1A1A;transform:translate(-3px,-3px)}
+.card-n{font-size:48px;font-weight:900;color:#F0F0EE;line-height:1;margin-bottom:8px;transition:color .2s}
+.card:hover .card-n{color:#D6404030}
+.card h3{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.card p{font-size:12px;line-height:1.7;color:#999999}
+.proof{border:3px solid #1A1A1A;box-shadow:5px 5px 0 #1A1A1A;background:#FFFFFF}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.proof-item{padding:28px;border:2px solid #1A1A1A;margin:-2px;text-align:center;transition:all .2s}
+.proof-item:hover{background:#1A1A1A;color:#fff}
+.proof-item:hover small{color:rgba(255,255,255,.6)}
+.proof-item strong{display:block;font-size:28px;font-weight:900;margin-bottom:4px}
+.proof-item small{font-size:9px;color:#999999;text-transform:uppercase;letter-spacing:1.5px}
+.dash{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{border-right:3px solid #1A1A1A;background:#FFFFFF;display:flex;flex-direction:column}
+.sb-logo{padding:20px 24px;border-bottom:3px solid #1A1A1A}
+.sb-logo a{font-size:18px;font-weight:900;text-decoration:none;color:#1A1A1A}
+.sb-logo a span{color:#D64040}
+.sb-sec{padding:16px 20px}
+.sb-sec h4{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#999999;margin-bottom:10px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid transparent;font-size:11px;font-weight:600;cursor:pointer;margin-bottom:3px;transition:all .2s cubic-bezier(.4,0,.2,1);border-radius:0;text-align:left;width:100%;background:none;font-family:inherit;color:#1A1A1A}
+.sb-item:hover{border-color:#1A1A1A;box-shadow:3px 3px 0 #1A1A1A;transform:translate(-2px,-2px);background:#F0F0EE}
+.sb-item.on{border:2px solid #1A1A1A;background:#1A1A1A;color:#fff;box-shadow:3px 3px 0 #1A1A1A}
+.sb-item.on .sb-meta{color:rgba(255,255,255,.5)}
+.sb-dot{width:8px;height:8px;border:2px solid #1A1A1A;flex-shrink:0}
+.sb-dot.ok{background:#2D8A4E}
+.sb-dot.err{background:#D64040}
+.sb-dot.warn{background:#E8A838}
+.sb-meta{font-size:9px;color:#999999}
+.main{overflow-y:auto;padding:32px 40px;background:#FAFAF8}
+.m-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.m-top h2{font-size:22px;font-weight:900;letter-spacing:-1px}
+.m-stats{display:flex;gap:8px}
+.m-stat{padding:6px 14px;border:2px solid #1A1A1A;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:#FFFFFF}
+.m-stat em{font-style:normal;color:#D64040}
+.panel{border:3px solid #1A1A1A;box-shadow:6px 6px 0 #1A1A1A;background:#FFFFFF;margin-bottom:18px;animation:fadeUp .4s ease-out forwards;transition:all .2s}
+.panel:hover{box-shadow:8px 8px 0 #1A1A1A;transform:translate(-1px,-1px)}
+.panel:nth-child(2){animation-delay:.06s}
+.panel:nth-child(3){animation-delay:.12s}
+.panel:nth-child(4){animation-delay:.18s}
+.panel:nth-child(5){animation-delay:.24s}
+.panel:nth-child(6){animation-delay:.3s}
+.p-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:3px solid #1A1A1A}
+.p-head h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px}
+.p-badge{padding:4px 12px;border:2px solid;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;transition:all .2s}
+.p-badge.ok{background:#2D8A4E;color:#fff;border-color:#2D8A4E}
+.p-badge.err{background:#D64040;color:#fff;border-color:#D64040}
+.p-badge.info{background:#1A1A1A;color:#fff;border-color:#1A1A1A}
+.p-body{padding:18px 20px}
+.kv{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0EE;transition:background .15s}
+.kv:last-child{border-bottom:none}
+.kv:hover{background:#F0F0EE;margin:0 -20px;padding:10px 20px}
+.kv .k{font-size:10px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:1px}
+.kv .v{font-size:11px;font-weight:600;text-align:right;max-width:60%;word-break:break-all}
+.hash-box{display:flex;align-items:center;gap:8px;padding:10px 14px;border:2px solid #1A1A1A;margin:6px 0;background:#F0F0EE;transition:all .15s}
+.hash-box:hover{border-color:#D64040}
+.hash-box .hl{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#999999}
+.hash-box .hv{font-family:'JetBrains Mono',monospace;font-size:10px;flex:1;word-break:break-all}
+.hash-box .hc{padding:4px 10px;font-family:inherit;font-size:8px;font-weight:800;border:2px solid #1A1A1A;background:transparent;cursor:pointer;text-transform:uppercase;transition:all .15s}
+.hash-box .hc:hover{background:#1A1A1A;color:#fff}
+.pipeline{display:flex;margin-bottom:18px;position:relative}
+.pipeline::after{content:'';position:absolute;bottom:-9px;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#1A1A1A 0,#1A1A1A 6px,transparent 6px,transparent 12px)}
+.pipeline .ps{flex:1;padding:10px 6px;border:3px solid #1A1A1A;text-align:center;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-right:-3px;transition:all .3s cubic-bezier(.4,0,.2,1);background:#FFFFFF;position:relative}
+.pipeline .ps:last-child{margin-right:0}
+.pipeline .ps.done{background:#1A1A1A;color:#fff;border-color:#1A1A1A;transform:translateY(-2px)}
+.pipeline .ps.now{background:#D64040;color:#fff;border-color:#D64040;animation:stepGlow 2s infinite;transform:translateY(-3px)}
+.pipeline .ps.wait{color:#999999;background:#F0F0EE}
+.export-box{font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;padding:16px;border:2px solid #1A1A1A;background:#F0F0EE;max-height:200px;overflow-y:auto;white-space:pre-wrap}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px;text-align:center}
+.empty h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.empty p{font-size:12px;color:#999999}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.15}
+.scan{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999}
+.scan::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#D6404030,transparent);animation:scanLine 5s linear infinite;opacity:.6}
+.grain{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9998;opacity:.012}
+.scenarios{display:flex;gap:0;border:3px solid #1A1A1A;margin-bottom:-3px;position:relative;z-index:2}
+.sc-btn{flex:1;padding:10px;font-family:inherit;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border:none;border-right:3px solid #1A1A1A;cursor:pointer;background:#FFFFFF;color:#1A1A1A;transition:all .15s}
+.sc-btn:last-child{border-right:none}
+.sc-btn:hover{background:#F0F0EE}
+.sc-btn.active{background:#1A1A1A;color:#fff}
+.sc-label{font-size:9px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:1px;padding:6px 0;margin-bottom:4px}
+.export-btn{display:block;width:100%;margin-top:16px;padding:14px;font-family:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;border:3px solid #1A1A1A;background:#1A1A1A;color:#fff;cursor:pointer;transition:all .15s;box-shadow:5px 5px 0 #1A1A1A}
+.export-btn:hover{box-shadow:8px 8px 0 #1A1A1A;transform:translate(-3px,-3px);background:#D64040}
+@media(max-width:900px){.hero h1{font-size:48px}.cards{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.sidebar{display:none}.loop{flex-direction:column}.ls{margin-right:0}}
+</style></head><body><div class="scan"></div><div class="grain"></div><div class="topbar"><a class="logo" href="index.html">RIFT<span>.</span></a><div class="nav"><a class="active" href="index.html">Landing</a><a href="dashboard.html">Dashboard</a></div></div><div class="hero-bg"><div class="hero-grid"></div><div class="hero-dots"><div class="hero-dot" style="left:86%;top:19%;animation-delay:1.4s;width:4px;height:4px;opacity:0.07"></div><div class="hero-dot" style="left:18%;top:91%;animation-delay:2.7s;width:8px;height:8px;opacity:0.11"></div><div class="hero-dot" style="left:9%;top:8%;animation-delay:1.2s;width:4px;height:4px;opacity:0.11"></div><div class="hero-dot" style="left:76%;top:30%;animation-delay:3.5s;width:8px;height:8px;opacity:0.09"></div><div class="hero-dot" style="left:62%;top:80%;animation-delay:4.3s;width:5px;height:5px;opacity:0.13"></div><div class="hero-dot" style="left:25%;top:94%;animation-delay:1.4s;width:6px;height:6px;opacity:0.07"></div><div class="hero-dot" style="left:48%;top:18%;animation-delay:0.5s;width:4px;height:4px;opacity:0.13"></div><div class="hero-dot" style="left:82%;top:38%;animation-delay:3.6s;width:8px;height:8px;opacity:0.10"></div><div class="hero-dot" style="left:53%;top:15%;animation-delay:4.1s;width:7px;height:7px;opacity:0.11"></div><div class="hero-dot" style="left:51%;top:78%;animation-delay:0.3s;width:5px;height:5px;opacity:0.12"></div><div class="hero-dot" style="left:42%;top:15%;animation-delay:4.3s;width:8px;height:8px;opacity:0.09"></div><div class="hero-dot" style="left:63%;top:86%;animation-delay:0.8s;width:8px;height:8px;opacity:0.09"></div><div class="hero-dot" style="left:90%;top:39%;animation-delay:3.4s;width:8px;height:8px;opacity:0.06"></div><div class="hero-dot" style="left:86%;top:26%;animation-delay:1.2s;width:7px;height:7px;opacity:0.10"></div><div class="hero-dot" style="left:39%;top:86%;animation-delay:1.1s;width:7px;height:7px;opacity:0.08"></div><div class="hero-dot" style="left:12%;top:34%;animation-delay:4.0s;width:8px;height:8px;opacity:0.09"></div><div class="hero-dot" style="left:13%;top:32%;animation-delay:2.8s;width:9px;height:9px;opacity:0.12"></div><div class="hero-dot" style="left:32%;top:88%;animation-delay:4.4s;width:6px;height:6px;opacity:0.11"></div><div class="hero-dot" style="left:23%;top:38%;animation-delay:3.7s;width:5px;height:5px;opacity:0.10"></div><div class="hero-dot" style="left:79%;top:59%;animation-delay:2.0s;width:8px;height:8px;opacity:0.07"></div><div class="hero-dot" style="left:22%;top:70%;animation-delay:3.8s;width:6px;height:6px;opacity:0.14"></div><div class="hero-dot" style="left:24%;top:85%;animation-delay:3.4s;width:5px;height:5px;opacity:0.11"></div><div class="hero-dot" style="left:54%;top:53%;animation-delay:2.3s;width:7px;height:7px;opacity:0.08"></div><div class="hero-dot" style="left:75%;top:6%;animation-delay:0.6s;width:7px;height:7px;opacity:0.14"></div><div class="hero-dot" style="left:39%;top:87%;animation-delay:1.5s;width:6px;height:6px;opacity:0.07"></div><div class="hero-dot" style="left:5%;top:38%;animation-delay:3.8s;width:9px;height:9px;opacity:0.10"></div><div class="hero-dot" style="left:18%;top:85%;animation-delay:3.2s;width:5px;height:5px;opacity:0.11"></div><div class="hero-dot" style="left:24%;top:52%;animation-delay:2.7s;width:8px;height:8px;opacity:0.13"></div><div class="hero-dot" style="left:72%;top:5%;animation-delay:2.4s;width:7px;height:7px;opacity:0.06"></div><div class="hero-dot" style="left:51%;top:44%;animation-delay:1.2s;width:5px;height:5px;opacity:0.11"></div></div></div><div class="hero-inner"><div class="hero-text"><h1><span class="line"><span>When an AI agent fails,</span></span><span class="line"><span>the world <strong style="color:#D64040">keeps changing</strong></span></span></h1><p>RIFT freezes the incident world so you can reproduce the exact failure and prove the fix.</p><div class="hero-btns"><a class="btn btn-fill" href="dashboard.html"><span>Open Dashboard</span></a><a class="btn btn-ghost" href="#how"><span>How it works</span></a></div></div></div><div class="wrap"><div class="section" id="how"><div class="sec-label">/ How it works</div><h2>The <em>complete loop</em></h2><p class="sub">Not just reproduction. The entire incident lifecycle from failure to verified resolution.</p><div class="loop"><div class="ls"><strong>FAIL</strong><small>Agent acts</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>CAPTURE</strong><small>Record causal envelope</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>FREEZE</strong><small>Hash-seal world</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>RECONSTRUCT</strong><small>Rebuild environment</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>RIFT</strong><small>Reproduce failure</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>DIAGNOSE</strong><small>Explain divergence</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>FIX</strong><small>Correct agent</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>VERIFY</strong><small>Prove fix works</small><span class="ls-arrow">&rarr;</span></div><div class="ls"><strong>RESOLVE</strong><small>Fix survived incident</small></div></div></div><div class="section" id="walkthrough"><div class="sec-label">/ Walkthrough</div><h2>See it <em>fail</em></h2><p class="sub">Step through an incident from failure to resolution.</p><div class="demo"><div class="scenarios"><button class="sc-btn active" onclick="switchSc('refund')">Wrong Refund</button><button class="sc-btn" onclick="switchSc('address')">Side Effect</button><button class="sc-btn" onclick="switchSc('cancel')">Bad Cancel</button></div><div class="demo-header"><h3>Incident Walkthrough</h3><div class="demo-dots"><div class="demo-dot" data-dot="0"></div><div class="demo-dot" data-dot="1"></div><div class="demo-dot" data-dot="2"></div><div class="demo-dot" data-dot="3"></div><div class="demo-dot" data-dot="4"></div><div class="demo-dot" data-dot="5"></div><div class="demo-dot" data-dot="6"></div><div class="demo-dot" data-dot="7"></div><div class="demo-dot" data-dot="8"></div><div class="demo-dot" data-dot="9"></div><div class="demo-dot" data-dot="10"></div></div></div><div class="demo-content" id="demo-content"><div class="step-card" data-sc="refund" data-step="0" style="display:block"><div class="step-num">01</div><div class="step-title t-fail">FAIL</div><div class="step-text">Agent picks the wrong refund for Sarah Chen.</div><div class="step-detail"><span class="k">user &rarr;</span> <span class="v">"Process Sarah's pending refund"</span>
+<span class="k">agent &rarr;</span> <span class="v">get_refunds(order_1842)</span>
+<span class="k">agent selects</span> <span class="err">R91 &middot; COMPLETED</span>
+<span class="k">should have been</span> <span class="ok">R92 &middot; PENDING</span>
+<span class="err">WRONG_ENTITY_SELECTION &mdash; duplicate $80 payout</span></div></div><div class="step-card" data-sc="refund" data-step="1" style="display:none"><div class="step-num">02</div><div class="step-title t-capture">CAPTURE</div><div class="step-text">RIFT records the complete causal envelope.</div><div class="step-detail"><span class="k">request</span>      <span class="v">"Process Sarah's pending refund"</span>
+<span class="k">agent</span>         <span class="v">v1.0</span>
+<span class="k">state</span>         <span class="v">R91=COMPLETED, R92=PENDING</span>
+<span class="ok">47 artifacts recorded</span></div></div><div class="step-card" data-sc="refund" data-step="2" style="display:none"><div class="step-num">03</div><div class="step-title t-freeze">FREEZE</div><div class="step-text">The incident world is hash-sealed.</div><div class="step-detail"><span class="k">world hash</span>
+<span class="v">sha256:9f86d08e..4d6e8f</span>
+
+<span class="ok">TAMPERING DETECTED &rarr; RELEASE BLOCKED</span></div></div><div class="step-card" data-sc="refund" data-step="3" style="display:none"><div class="step-num">04</div><div class="step-title t-reconstruct">RECONSTRUCT</div><div class="step-text">RIFT rebuilds the exact incident environment.</div><div class="step-detail"><span class="k">customer</span>    <span class="v">Sarah Chen</span>
+<span class="k">refunds</span>
+             <span class="err">R91 &middot; $80 &middot; COMPLETED</span>
+             <span class="ok">R92 &middot; $80 &middot; PENDING</span>
+<span class="ok">WORLD RECONSTRUCTED</span></div></div><div class="step-card" data-sc="refund" data-step="4" style="display:none"><div class="step-num">05</div><div class="step-title t-rift">RIFT</div><div class="step-text">Same agent. Same world. Same failure.</div><div class="step-detail"><span class="k">agent selects</span> <span class="err">R91</span>
+
+<span class="err">FAILURE REPRODUCED</span></div></div><div class="step-card" data-sc="refund" data-step="5" style="display:none"><div class="step-num">06</div><div class="step-title t-diagnose">DIAGNOSE</div><div class="step-text">What the agent got wrong and why.</div><div class="step-detail"><span class="k">expected</span>       <span class="ok">R92 (status=PENDING)</span>
+<span class="k">selected</span>       <span class="err">R91 (status=COMPLETED)</span>
+<span class="k">root cause</span>      <span class="v">Policy matches by amount, ignores status</span></div></div><div class="step-card" data-sc="refund" data-step="6" style="display:none"><div class="step-num">07</div><div class="step-title t-fix">FIX</div><div class="step-text">Correct the agent policy.</div><div class="step-detail"><span class="k">v1.0</span> <span class="v">"Select refund matching amount"</span>
+<span class="k">v1.1</span> <span class="ok">"Select PENDING refund matching request"</span></div></div><div class="step-card" data-sc="refund" data-step="7" style="display:none"><div class="step-num">08</div><div class="step-title t-verify">VERIFY</div><div class="step-text">Proven fix against frozen incident.</div><div class="step-detail"><span class="k">agent selects</span> <span class="ok">R92</span>
+<span class="ok">FIX VERIFIED</span></div></div><div class="step-card" data-sc="refund" data-step="8" style="display:none"><div class="step-num">09</div><div class="step-title t-resolve">RESOLVE</div><div class="step-text">Fix survived the incident. Release authorized.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="ok">WORLD INTEGRITY       PASS</span>
+<span class="ok">FAILURE REPRODUCED    PASS</span>
+<span class="ok">FIX VERIFIED          PASS</span>
+<span class="ok">EVIDENCE CHAIN        PASS</span>
+
+<span class="ok">DECISION              AUTHORIZED</span>
+<span class="ok">DEPLOYMENT            RELEASED</span>
+
+<button class="export-btn" onclick="exportEvidence('refund')">EXPORT EVIDENCE &darr;</button></div></div><div class="step-card" data-sc="refund" data-step="9" style="display:none"><div class="step-num">10</div><div class="step-title t-fail">TAMPER</div><div class="step-text">Someone changes the frozen evidence.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="err">WORLD INTEGRITY       TAMPERED</span>
+<span class="err">FAILURE REPRODUCED    REFUSED</span>
+<span class="err">FIX VERIFIED          N/A</span>
+<span class="err">EVIDENCE CHAIN        BROKEN</span>
+
+<span class="err">DECISION              BLOCKED</span>
+<span class="err">DEPLOYMENT            REFUSED</span></div></div><div class="step-card" data-sc="refund" data-step="10" style="display:none"><div class="step-num">11</div><div class="step-title t-verify">RESTORE</div><div class="step-text">Valid evidence restored. Gate re-evaluated.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="ok">WORLD INTEGRITY       PASS</span>
+<span class="ok">FAILURE REPRODUCED    PASS</span>
+<span class="ok">FIX VERIFIED          PASS</span>
+<span class="ok">EVIDENCE CHAIN        PASS</span>
+
+<span class="ok">DECISION              AUTHORIZED</span>
+<span class="ok">DEPLOYMENT            RELEASED</span>
+
+<button class="export-btn" onclick="exportEvidence('refund')">EXPORT EVIDENCE &darr;</button></div></div><div class="step-card" data-sc="address" data-step="0" style="display:none"><div class="step-num">01</div><div class="step-title t-fail">FAIL</div><div class="step-text">Agent sends unauthorized email during address update.</div><div class="step-detail"><span class="k">user &rarr;</span> <span class="v">"Update my address to 9 Elm St"</span>
+<span class="k">agent &rarr;</span> <span class="v">update_address(sarah, "9 Elm St")</span>
+<span class="k">agent also</span> <span class="err">send_email("promo_summer")</span>
+<span class="err">FORBIDDEN_SIDE_EFFECT &mdash; unauthorized email</span></div></div><div class="step-card" data-sc="address" data-step="1" style="display:none"><div class="step-num">02</div><div class="step-title t-capture">CAPTURE</div><div class="step-text">RIFT records the complete causal envelope.</div><div class="step-detail"><span class="k">request</span>      <span class="v">"Update my address"</span>
+<span class="k">agent</span>         <span class="v">v1.0</span>
+<span class="k">tools called</span>  <span class="err">update_address, send_email</span>
+<span class="ok">32 artifacts recorded</span></div></div><div class="step-card" data-sc="address" data-step="2" style="display:none"><div class="step-num">03</div><div class="step-title t-freeze">FREEZE</div><div class="step-text">The incident world is hash-sealed.</div><div class="step-detail"><span class="k">world hash</span>
+<span class="v">sha256:a3b8c1..7e2f9a</span>
+
+<span class="ok">SEALED</span></div></div><div class="step-card" data-sc="address" data-step="3" style="display:none"><div class="step-num">04</div><div class="step-title t-reconstruct">RECONSTRUCT</div><div class="step-text">RIFT rebuilds the exact incident environment.</div><div class="step-detail"><span class="k">customer</span>    <span class="v">Sarah Chen</span>
+<span class="k">address</span>     <span class="v">123 Main St (current)</span>
+<span class="k">tools</span>       <span class="v">update_address(), send_email()</span>
+<span class="ok">WORLD RECONSTRUCTED</span></div></div><div class="step-card" data-sc="address" data-step="4" style="display:none"><div class="step-num">05</div><div class="step-title t-rift">RIFT</div><div class="step-text">Same agent. Same world. Same failure.</div><div class="step-detail"><span class="k">agent calls</span> <span class="err">send_email("promo_summer")</span>
+
+<span class="err">FAILURE REPRODUCED</span></div></div><div class="step-card" data-sc="address" data-step="5" style="display:none"><div class="step-num">06</div><div class="step-title t-diagnose">DIAGNOSE</div><div class="step-text">What the agent got wrong and why.</div><div class="step-detail"><span class="k">expected</span>       <span class="ok">UPDATE_ADDRESS only</span>
+<span class="k">actual</span>         <span class="err">UPDATE_ADDRESS + send_email</span>
+<span class="k">root cause</span>      <span class="v">Agent not constrained to stated intent</span></div></div><div class="step-card" data-sc="address" data-step="6" style="display:none"><div class="step-num">07</div><div class="step-title t-fix">FIX</div><div class="step-text">Constrain the agent to user intent.</div><div class="step-detail"><span class="k">v1.0</span> <span class="v">"Process the request"</span>
+<span class="k">v1.1</span> <span class="ok">"Only perform actions directly requested"</span></div></div><div class="step-card" data-sc="address" data-step="7" style="display:none"><div class="step-num">08</div><div class="step-title t-verify">VERIFY</div><div class="step-text">Proven fix against frozen incident.</div><div class="step-detail"><span class="k">agent calls</span> <span class="ok">update_address only</span>
+<span class="ok">FIX VERIFIED</span></div></div><div class="step-card" data-sc="address" data-step="8" style="display:none"><div class="step-num">09</div><div class="step-title t-resolve">RESOLVE</div><div class="step-text">Fix survived the incident. Release authorized.</div><div class="step-detail"><span class="k">status</span>         <span class="ok">INCIDENT RESOLVED</span>
+<span class="k">agent version</span>  <span class="v">v1.1</span>
+<span class="k">what happened</span>  <span class="v">Unauthorized email sent</span>
+<span class="k">fix verified</span>   <span class="ok">PASS</span>
+<span class="k">evidence</span>       <span class="ok">integrity verified</span>
+
+<span class="ok">RELEASE AUTHORIZED</span>
+
+<button class="export-btn" onclick="exportEvidence('address')">EXPORT EVIDENCE &darr;</button></div></div><div class="step-card" data-sc="address" data-step="9" style="display:none"><div class="step-num">10</div><div class="step-title t-fail">TAMPER</div><div class="step-text">Someone changes the frozen evidence.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="err">WORLD INTEGRITY       TAMPERED</span>
+<span class="err">FAILURE REPRODUCED    REFUSED</span>
+<span class="err">FIX VERIFIED          N/A</span>
+<span class="err">EVIDENCE CHAIN        BROKEN</span>
+
+<span class="err">DECISION              BLOCKED</span>
+<span class="err">DEPLOYMENT            REFUSED</span></div></div><div class="step-card" data-sc="address" data-step="10" style="display:none"><div class="step-num">11</div><div class="step-title t-verify">RESTORE</div><div class="step-text">Valid evidence restored. Gate re-evaluated.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="ok">WORLD INTEGRITY       PASS</span>
+<span class="ok">FAILURE REPRODUCED    PASS</span>
+<span class="ok">FIX VERIFIED          PASS</span>
+<span class="ok">EVIDENCE CHAIN        PASS</span>
+
+<span class="ok">DECISION              AUTHORIZED</span>
+<span class="ok">DEPLOYMENT            RELEASED</span>
+
+<button class="export-btn" onclick="exportEvidence('address')">EXPORT EVIDENCE &darr;</button></div></div><div class="step-card" data-sc="cancel" data-step="0" style="display:none"><div class="step-num">01</div><div class="step-title t-fail">FAIL</div><div class="step-text">Agent cancels a shipped order.</div><div class="step-detail"><span class="k">user &rarr;</span> <span class="v">"Cancel order #1842"</span>
+<span class="k">agent &rarr;</span> <span class="v">cancel_order(order_1842)</span>
+<span class="k">order status</span> <span class="err">SHIPPED &rarr; CANCELLED</span>
+<span class="err">STATE_TRANSITION_VIOLATION &mdash; shipped cannot cancel</span></div></div><div class="step-card" data-sc="cancel" data-step="1" style="display:none"><div class="step-num">02</div><div class="step-title t-capture">CAPTURE</div><div class="step-text">RIFT records the complete causal envelope.</div><div class="step-detail"><span class="k">request</span>      <span class="v">"Cancel order #1842"</span>
+<span class="k">agent</span>         <span class="v">v1.0</span>
+<span class="k">order state</span>   <span class="err">SHIPPED</span>
+<span class="ok">28 artifacts recorded</span></div></div><div class="step-card" data-sc="cancel" data-step="2" style="display:none"><div class="step-num">03</div><div class="step-title t-freeze">FREEZE</div><div class="step-text">The incident world is hash-sealed.</div><div class="step-detail"><span class="k">world hash</span>
+<span class="v">sha256:b7d4e2..1c8f3a</span>
+
+<span class="ok">SEALED</span></div></div><div class="step-card" data-sc="cancel" data-step="3" style="display:none"><div class="step-num">04</div><div class="step-title t-reconstruct">RECONSTRUCT</div><div class="step-text">RIFT rebuilds the exact incident environment.</div><div class="step-detail"><span class="k">order</span>       <span class="v">#1842 &middot; $120 &middot; SHIPPED</span>
+<span class="k">customer</span>    <span class="v">Mike Johnson</span>
+<span class="ok">WORLD RECONSTRUCTED</span></div></div><div class="step-card" data-sc="cancel" data-step="4" style="display:none"><div class="step-num">05</div><div class="step-title t-rift">RIFT</div><div class="step-text">Same agent. Same world. Same failure.</div><div class="step-detail"><span class="k">agent calls</span> <span class="err">cancel_order(order_1842)</span>
+
+<span class="err">FAILURE REPRODUCED</span></div></div><div class="step-card" data-sc="cancel" data-step="5" style="display:none"><div class="step-num">06</div><div class="step-title t-diagnose">DIAGNOSE</div><div class="step-text">What the agent got wrong and why.</div><div class="step-detail"><span class="k">expected</span>       <span class="ok">Escalate to refund request</span>
+<span class="k">actual</span>         <span class="err">cancel_order (SHIPPED &rarr; CANCELLED)</span>
+<span class="k">root cause</span>      <span class="v">Agent does not check order status</span></div></div><div class="step-card" data-sc="cancel" data-step="6" style="display:none"><div class="step-num">07</div><div class="step-title t-fix">FIX</div><div class="step-text">Add status check before cancel.</div><div class="step-detail"><span class="k">v1.0</span> <span class="v">"Cancel the order"</span>
+<span class="k">v1.1</span> <span class="ok">"Check status first. SHIPPED = refund request."</span></div></div><div class="step-card" data-sc="cancel" data-step="7" style="display:none"><div class="step-num">08</div><div class="step-title t-verify">VERIFY</div><div class="step-text">Proven fix against frozen incident.</div><div class="step-detail"><span class="k">agent escalates</span> <span class="ok">REFUND_REQUEST</span>
+<span class="ok">FIX VERIFIED</span></div></div><div class="step-card" data-sc="cancel" data-step="8" style="display:none"><div class="step-num">09</div><div class="step-title t-resolve">RESOLVE</div><div class="step-text">Fix survived the incident. Release authorized.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="ok">WORLD INTEGRITY       PASS</span>
+<span class="ok">FAILURE REPRODUCED    PASS</span>
+<span class="ok">FIX VERIFIED          PASS</span>
+<span class="ok">EVIDENCE CHAIN        PASS</span>
+
+<span class="ok">DECISION              AUTHORIZED</span>
+<span class="ok">DEPLOYMENT            RELEASED</span>
+
+<button class="export-btn" onclick="exportEvidence('cancel')">EXPORT EVIDENCE &darr;</button></div></div><div class="step-card" data-sc="cancel" data-step="9" style="display:none"><div class="step-num">10</div><div class="step-title t-fail">TAMPER</div><div class="step-text">Someone changes the frozen evidence.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="err">WORLD INTEGRITY       TAMPERED</span>
+<span class="err">FAILURE REPRODUCED    REFUSED</span>
+<span class="err">FIX VERIFIED          N/A</span>
+<span class="err">EVIDENCE CHAIN        BROKEN</span>
+
+<span class="err">DECISION              BLOCKED</span>
+<span class="err">DEPLOYMENT            REFUSED</span></div></div><div class="step-card" data-sc="cancel" data-step="10" style="display:none"><div class="step-num">11</div><div class="step-title t-verify">RESTORE</div><div class="step-text">Valid evidence restored. Gate re-evaluated.</div><div class="step-detail"><span class="k">PROPOSED DEPLOYMENT</span>
+<span class="k">agent:</span> <span class="v">v1.1</span>
+<span class="k">target:</span> <span class="v">production</span>
+
+<span class="k">RIFT RELEASE GATE</span>
+<span class="ok">WORLD INTEGRITY       PASS</span>
+<span class="ok">FAILURE REPRODUCED    PASS</span>
+<span class="ok">FIX VERIFIED          PASS</span>
+<span class="ok">EVIDENCE CHAIN        PASS</span>
+
+<span class="ok">DECISION              AUTHORIZED</span>
+<span class="ok">DEPLOYMENT            RELEASED</span>
+
+<button class="export-btn" onclick="exportEvidence('cancel')">EXPORT EVIDENCE &darr;</button></div></div></div><div class="demo-footer"><button id="btn-prev" onclick="prev()">&larr; Prev</button><button onclick="reset()">Reset</button><button id="btn-next" onclick="next()">Next &rarr;</button></div></div></div><div class="section"><div class="sec-label">/ The problem</div><h2>The <em>missing boundary</em></h2><p class="sub">AI agents operate across changing state. When something goes wrong, the original context disappears.</p><div class="cards"><div class="card"><div class="card-n">01</div><h3>World changes</h3><p>Between failure and investigation, state drifts. The world that caused the bug is gone.</p></div><div class="card"><div class="card-n">02</div><h3>No snapshot</h3><p>Logs and traces don't preserve the exact world state for re-running the agent.</p></div><div class="card"><div class="card-n">03</div><h3>Guesswork</h3><p>Without reproduction, you can't prove your fix works. Debugging blind.</p></div></div></div><div class="section"><div class="sec-label">/ Proof</div><div class="proof"><div class="proof-grid"><div class="proof-item"><strong>SHA-256</strong><small>Hash sealed</small></div><div class="proof-item"><strong>FROZEN</strong><small>Cannot drift</small></div><div class="proof-item"><strong>DETERMINISTIC</strong><small>Same input &rarr; same output</small></div></div></div></div></div><script>var SC={"refund": 11, "address": 11, "cancel": 11};var curSc='refund';var step=0;function show(){document.querySelectorAll('.step-card').forEach(function(c){c.style.display='none';});var card=document.querySelector('.step-card[data-sc="'+curSc+'"][data-step="'+step+'"]');if(card)card.style.display='block';var total=SC[curSc]||9;document.querySelectorAll('.demo-dot').forEach(function(d,i){d.className='demo-dot'+(i<step?' done':(i===step?' active':''));});document.getElementById('btn-prev').disabled=step===0;document.getElementById('btn-next').disabled=step===total-1;}function next(){var t=SC[curSc]||9;if(step<t-1){step++;show();}}function prev(){if(step>0){step--;show();}}function reset(){step=0;show();}function switchSc(k){curSc=k;step=0;document.querySelectorAll('.sc-btn').forEach(function(b){b.classList.remove('active')});event.target.classList.add('active');show();}function exportEvidence(sc){var evidence={refund:{id:'inc_047',cat:'WRONG_ENTITY_SELECTION',what:'Agent selected R91 (COMPLETED) instead of R92 (PENDING)',cause:'Policy matches by amount, ignores status',fix:'v1.1 — filter by status before amount',verdict:'FIX_VERIFIED'},address:{id:'inc_048',cat:'FORBIDDEN_SIDE_EFFECT',what:'Agent sent promotional email during address update',cause:'Agent not constrained to stated intent',fix:'v1.1 — constrain to user intent only',verdict:'FIX_VERIFIED'},cancel:{id:'inc_049',cat:'STATE_TRANSITION_VIOLATION',what:'Agent cancelled shipped order #1842',cause:'Agent does not check order status before acting',fix:'v1.1 — check status, SHIPPED → refund request',verdict:'FIX_VERIFIED'}};var e=evidence[sc];var now=new Date().toISOString();var md='# RIFT INCIDENT EVIDENCE\n\n'+'Incident: '+e.id+'\n'+'Agent: v1.1\n'+'Original Version: v1.0\n'+'Verified Version: v1.1\n'+'Category: '+e.cat+'\n\n'+'---\n\n'+'## ORIGINAL FAILURE\n\n'+e.what+'\n\n'+'## FROZEN WORLD\n\n'+'World Hash: sha256:...\n'+'State: VERIFIED\n'+'Context: VERIFIED\n'+'Tools: VERIFIED\n'+'Trajectory: VERIFIED\n\n'+'## REPRODUCTION\n\n'+'Original agent: FAILED\n'+'Failure reproduced: YES\n\n'+'## DIAGNOSIS\n\n'+'Root cause: '+e.cause+'\n\n'+'## FIX\n\n'+e.fix+'\n\n'+'## VERIFICATION\n\n'+'Fixed agent: PASSED\n'+'Original incident conditions: PRESERVED\n\n'+'## INTEGRITY\n\n'+'Frozen evidence tampering: NOT DETECTED\n\n'+'## RESOLUTION\n\n'+'INCIDENT RESOLVED\n'+'Resolved: '+now+'\n\n'+'## RELEASE STATUS\n\n'+'PRODUCTION-SAFE\n'+'Release authorized: YES\n\n'+'---\n\n'+'*Generated by RIFT — '+now+'*\n';var blob=new Blob([md],{type:'text/markdown'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=e.id+'-evidence.md';a.click();}show();</script></body></html>

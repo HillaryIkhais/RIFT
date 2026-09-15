@@ -1,0 +1,159 @@
+{
+  "run_id": "run_006",
+  "task": {
+    "kind": "cancel",
+    "customer_id": 42,
+    "ticket_id": 9
+  },
+  "agent_version": "v1.0",
+  "initial": {
+    "customers": [
+      {
+        "id": 42,
+        "name": "Sarah Chen",
+        "email": "sarah@x.com",
+        "address": "1 Main St"
+      }
+    ],
+    "orders": [
+      {
+        "id": 1842,
+        "customer_id": 42,
+        "amount_cents": 8000,
+        "status": "DELIVERED"
+      },
+      {
+        "id": 1843,
+        "customer_id": 42,
+        "amount_cents": 4500,
+        "status": "SHIPPED"
+      }
+    ],
+    "refunds": [
+      {
+        "id": "R91",
+        "order_id": 1842,
+        "amount_cents": 8000,
+        "status": "COMPLETED"
+      },
+      {
+        "id": "R92",
+        "order_id": 1842,
+        "amount_cents": 8000,
+        "status": "PENDING"
+      }
+    ],
+    "payouts": [
+      {
+        "id": 1,
+        "refund_id": "R91",
+        "amount_cents": 8000
+      }
+    ],
+    "tickets": [
+      {
+        "id": 9,
+        "customer_id": 42,
+        "message": "Cancel order 1843",
+        "status": "OPEN"
+      }
+    ],
+    "emails": []
+  },
+  "events": [
+    {
+      "seq": 1,
+      "type": "tool_call",
+      "tool": "lookup_order",
+      "args": {
+        "customer_id": 42
+      }
+    },
+    {
+      "seq": 2,
+      "type": "tool_result",
+      "tool": "lookup_order",
+      "result": {
+        "id": 1843,
+        "customer_id": 42,
+        "amount_cents": 4500,
+        "status": "SHIPPED"
+      }
+    },
+    {
+      "seq": 3,
+      "type": "tool_call",
+      "tool": "cancel_order",
+      "args": {
+        "order_id": 1843
+      }
+    },
+    {
+      "seq": 4,
+      "type": "tool_result",
+      "tool": "cancel_order",
+      "result": {
+        "ok": true,
+        "order_id": 1843,
+        "prior_status": "SHIPPED",
+        "status": "CANCELLED"
+      }
+    }
+  ],
+  "final": {
+    "customers": [
+      {
+        "id": 42,
+        "name": "Sarah Chen",
+        "email": "sarah@x.com",
+        "address": "1 Main St"
+      }
+    ],
+    "orders": [
+      {
+        "id": 1842,
+        "customer_id": 42,
+        "amount_cents": 8000,
+        "status": "DELIVERED"
+      },
+      {
+        "id": 1843,
+        "customer_id": 42,
+        "amount_cents": 4500,
+        "status": "CANCELLED"
+      }
+    ],
+    "refunds": [
+      {
+        "id": "R91",
+        "order_id": 1842,
+        "amount_cents": 8000,
+        "status": "COMPLETED"
+      },
+      {
+        "id": "R92",
+        "order_id": 1842,
+        "amount_cents": 8000,
+        "status": "PENDING"
+      }
+    ],
+    "payouts": [
+      {
+        "id": 1,
+        "refund_id": "R91",
+        "amount_cents": 8000
+      }
+    ],
+    "tickets": [
+      {
+        "id": 9,
+        "customer_id": 42,
+        "message": "Cancel order 1843",
+        "status": "OPEN"
+      }
+    ],
+    "emails": []
+  },
+  "outcome": "done",
+  "hash": "026d3b378c7eaa0ee6de736b1a437f124bc2037d77a3f8d2e827924fdb203df8"
+}

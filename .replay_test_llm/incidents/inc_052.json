@@ -1,0 +1,23 @@
+{
+  "incident_id": "inc_052",
+  "run_id": "run_012",
+  "agent_version": "t",
+  "category": "STATE_TRANSITION_VIOLATION",
+  "status": "OPEN",
+  "what_happened": "Agent cancelled shipped order 1843",
+  "why_it_matters": "Shipped orders cannot be cancelled; must go through refund",
+  "root_cause": "Agent does not check order status before acting",
+  "violated_invariant": "SHIPPED must never transition to CANCELLED",
+  "diagnosis": {
+    "expected": "SHIPPED -> REFUND_REQUEST.",
+    "actual": "SHIPPED -> CANCELLED.",
+    "expected_entity": "escalate to refund request",
+    "selected_entity": "cancel_order(1843)",
+    "decision_signal": "order exists (agent did not check status before cancel)",
+    "ignored_signal": "status=SHIPPED (cannot cancel, must refund)",
+    "failure_class": "STATE_TRANSITION_VIOLATION",
+    "root_cause": "Agent does not check order status before acting"
+  },
+  "run_hash": "619dedfb3a1905d9b1e90247356293bef8ba46f2f1378bfe375b3ffd65913b6e",
+  "incident_hash": "68cd95e4702af2efd00839093f4f6d5ce4d28ae73d73927355ec3f569e6b3a95"
+}

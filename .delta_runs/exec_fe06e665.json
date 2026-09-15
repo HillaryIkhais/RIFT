@@ -1,0 +1,164 @@
+{
+  "execution_id": "exec_fe06e665",
+  "intent": "Refund customer:alice $1.00",
+  "verdict": "BLOCKED",
+  "goal": [
+    "refund:r1",
+    "status",
+    "succeeded"
+  ],
+  "contract": {
+    "effects": [
+      {
+        "entity": "refund:r1",
+        "field": "status",
+        "expected": "succeeded",
+        "op": "SET",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "refund:r1",
+        "field": "*",
+        "expected": "*",
+        "op": "CREATE",
+        "derived": false,
+        "required": false,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "balance",
+        "expected": [
+          "delta",
+          -100
+        ],
+        "op": "DELTA",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      },
+      {
+        "entity": "audit:*",
+        "field": "*",
+        "expected": "*",
+        "op": "CREATE",
+        "derived": false,
+        "required": true,
+        "recovery": "REVERSIBLE"
+      }
+    ],
+    "forbidden": [
+      {
+        "entity": "customer:alice",
+        "field": "sub",
+        "reason": "subscription change not authorized by a refund"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "risk",
+        "reason": "risk score must never move on a refund"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "email",
+        "reason": "identity fields frozen for this intent"
+      },
+      {
+        "entity": "customer:alice",
+        "field": "plan",
+        "reason": "tier change requires its own intent"
+      },
+      {
+        "entity": "repo:*",
+        "field": "*",
+        "reason": "code state out of scope for a refund"
+      }
+    ],
+    "scope": [
+      "refund:r1",
+      "customer:alice",
+      "audit:*"
+    ],
+    "max_amount_cents": 100,
+    "operation_id": "op-8",
+    "pinned": {
+      "customer:alice": 0,
+      "customer:bob": 0,
+      "refund:r1": 0,
+      "audit:e1": 0
+    }
+  },
+  "seed": {
+    "committed_ops": [
+      "op-8"
+    ],
+    "unobserved": 0,
+    "concurrent": []
+  },
+  "before": {
+    "customer:alice": {
+      "balance": 900,
+      "plan": "basic",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active",
+      "updated_at": "t1"
+    },
+    "customer:bob": {
+      "balance": 500
+    },
+    "refund:r1": {
+      "status": "succeeded"
+    },
+    "audit:e1": {
+      "kind": "refund",
+      "by": "agent"
+    }
+  },
+  "after": {
+    "customer:alice": {
+      "balance": 900,
+      "plan": "basic",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active",
+      "updated_at": "t1"
+    },
+    "customer:bob": {
+      "balance": 500
+    },
+    "refund:r1": {
+      "status": "succeeded"
+    },
+    "audit:e1": {
+      "kind": "refund",
+      "by": "agent"
+    }
+  },
+  "final": {
+    "customer:alice": {
+      "balance": 900,
+      "plan": "basic",
+      "risk": 21,
+      "email": "a@x.com",
+      "sub": "active",
+      "updated_at": "t1"
+    },
+    "customer:bob": {
+      "balance": 500
+    },
+    "refund:r1": {
+      "status": "succeeded"
+    },
+    "audit:e1": {
+      "kind": "refund",
+      "by": "agent"
+    }
+  },
+  "evidence": [
+    "BLOCKED: operation_id='op-8' already committed -> duplicate/replay rejected, no second mutation."
+  ],
+  "compensation": []
+}

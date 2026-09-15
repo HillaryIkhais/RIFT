@@ -1,0 +1,48 @@
+{
+  "artifact_type": "RIFT_RESOLUTION",
+  "version": "1.0",
+  "incident_id": "inc_048",
+  "world_hash": "009ea88377e11e08d1c7c411f9acec35c448983dc52b9a1467135624f222ca25",
+  "agent_version": "v1.0",
+  "category": "WRONG_ENTITY_SELECTION",
+  "status": "RESOLVED",
+  "summary": {
+    "what_happened": "Agent chose R91 (already COMPLETED) instead of R92",
+    "why_it_matters": "Duplicate $80 payout to Sarah Chen",
+    "root_cause": "Policy matches by amount instead of status",
+    "violated_invariant": "refund.status must equal requested status"
+  },
+  "diagnosis": {
+    "expected": "Select R92.",
+    "actual": "Selected R91 (already COMPLETED) -> duplicate payout.",
+    "expected_entity": "R92",
+    "selected_entity": "R91",
+    "decision_signal": "amount=$80 (matched by amount, ignored status)",
+    "ignored_signal": "status=PENDING (should have filtered to R92)",
+    "failure_class": "WRONG_ENTITY_SELECTION",
+    "root_cause": "Policy matches by amount instead of status"
+  },
+  "reproduction": {
+    "replay_id": "rpl_000",
+    "result": "PASS",
+    "failure_reproduced": false,
+    "violations": []
+  },
+  "fix": {
+    "agent_version": "v1.1",
+    "verdict": "FIX_VERIFIED",
+    "total": 1,
+    "fixed": 1,
+    "still_broken": []
+  },
+  "resolution": {
+    "resolved_at": "2026-09-15T20:01:25.654784+00:00",
+    "fix_survived_incident": true,
+    "evidence_chain": [
+      "incident_frozen_with_hash",
+      "failure_reproduced_from_frozen_world",
+      "fix_applied_to_agent",
+      "fix_verified_against_original_incident"
+    ]
+  }
+}

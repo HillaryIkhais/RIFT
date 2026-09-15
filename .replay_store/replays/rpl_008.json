@@ -1,0 +1,9 @@
+{
+  "replay_id": "rpl_008",
+  "incident_id": "inc_050",
+  "agent_version": "v1.1",
+  "result": "PASS",
+  "failure_reproduced": false,
+  "violations": [],
+  "timestamp": "2026-09-13T13:38:34.295387+00:00"
+}
