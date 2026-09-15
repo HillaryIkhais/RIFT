@@ -63,24 +63,20 @@ def _css():
         "\n.nav a:hover{box-shadow:3px 3px 0 " + B + ";transform:translate(-2px,-2px);background:" + S2 + "}"
         "\n.nav a.active{background:" + FG + ";color:#fff}"
         # ── hero ──
-        "\n.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}"
+        "\n.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:" + BG + "}"
         "\n.hero-bg{position:absolute;inset:0;z-index:0}"
         "\n.hero-grid{position:absolute;inset:0;background-image:"
         "linear-gradient(" + B + " 1px,transparent 1px),linear-gradient(90deg," + B + " 1px,transparent 1px);"
         "background-size:60px 60px;opacity:.04;animation:gridPulse 8s ease-in-out infinite}"
         "\n.hero-dots{position:absolute;inset:0}"
         "\n.hero-dot{position:absolute;width:4px;height:4px;background:" + A + ";border-radius:50%;opacity:.15;animation:float 6s ease-in-out infinite}"
-        "\n.hero-inner{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:80px 40px;width:100%}"
-        "\n.hero-text{animation:fadeUp .8s ease-out forwards;width:100%}"
-        "\n.hero h1{font-size:240px !important;font-weight:900;line-height:1.0;letter-spacing:-10px;margin-bottom:28px}"
-        "\n.hero h1 .line{display:block;overflow:visible}"
-        "\n.hero h1 .line span{display:inline-block;animation:fadeUp .6s ease-out forwards}"
-        "\n.hero h1 .line:nth-child(2) span{animation-delay:.15s}"
-        "\n.hero h1 .line:nth-child(3) span{animation-delay:.3s}"
-        "\n.hero h1 em{font-style:normal !important;color:" + A + " !important;position:relative}"
-        "\n.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:4px;background:" + A + ";transform:scaleX(0);transform-origin:left;animation:scaleIn .4s ease-out .8s forwards}"
-        "\n.hero p{font-size:19px;line-height:1.7;color:" + MU + ";margin-bottom:36px;max-width:500px;animation:fadeUp .6s ease-out .3s forwards;opacity:0}"
-        "\n.hero-btns{display:flex;gap:14px;animation:fadeUp .6s ease-out .45s forwards;opacity:0}"
+        "\n.hero-inner{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:100px 40px 64px;width:100%}"
+        "\n.hero-text{min-width:0;max-width:100%}"
+        "\n.hero-text h1{font-size:clamp(48px,6.5vw,110px);font-weight:900;line-height:1.02;letter-spacing:-0.03em;margin-bottom:32px;white-space:normal}"
+        "\n.hero-text h1 em{font-style:normal !important;color:" + A + " !important;position:relative}"
+        "\n.hero-text h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:4px;background:" + A + ";transform:scaleX(0);transform-origin:left;animation:scaleIn .4s ease-out .8s forwards}"
+        "\n.hero-text p{font-size:22px;line-height:1.6;color:#9A9A9A;margin-bottom:48px;max-width:760px;animation:fadeUp .6s ease-out .3s forwards;opacity:0}"
+        "\n.hero-btns{display:flex;gap:16px;animation:fadeUp .6s ease-out .45s forwards;opacity:0}"
         "\n.btn{padding:16px 32px;font-family:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;text-decoration:none;display:inline-block;border:3px solid " + B + ";transition:all .15s ease;position:relative;overflow:hidden}"
         "\n.btn::after{content:'';position:absolute;inset:0;background:" + FG + ";transform:scaleX(0);transform-origin:left;transition:transform .2s ease;z-index:0}"
         "\n.btn span{position:relative;z-index:1}"
@@ -89,7 +85,8 @@ def _css():
         "\n.btn-ghost{background:transparent;color:" + FG + ";box-shadow:5px 5px 0 " + B + "}"
         "\n.btn-ghost:hover{box-shadow:8px 8px 0 " + B + ";transform:translate(-3px,-3px)}"
         # ── demo terminal ──
-        "\n.demo{border:3px solid " + B + ";box-shadow:10px 10px 0 " + B + ";background:" + S + ";display:flex;flex-direction:column;max-width:600px}"
+        "\n.demo-wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 40px 100px;width:100%}"
+        "\n.demo{border:3px solid " + B + ";box-shadow:10px 10px 0 " + B + ";background:" + S + ";display:flex;flex-direction:column;width:100%;min-width:0}"
         "\n.demo-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:3px solid " + B + ";background:" + S2 + "}"
         "\n.demo-header h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px}"
         "\n.demo-dots{display:flex;gap:5px}"
@@ -117,7 +114,7 @@ def _css():
         "\n.demo-footer button:active{transform:scale(.97)}"
         "\n.demo-footer button:disabled{opacity:.2;cursor:default;transform:none}"
         # ── sections ──
-        "\n.wrap{max-width:1200px;margin:0 auto;padding:0 40px}"
+        "\n.wrap{max-width:1200px;margin:0 auto;padding:0 40px;position:relative;z-index:2;background:" + BG + ";border-top:3px solid " + B + "}"
         "\n.section{padding:100px 0}"
         "\n.sec-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:" + MU + ";margin-bottom:8px}"
         "\n.section h2{font-size:38px;font-weight:900;letter-spacing:-1px;margin-bottom:16px}"
@@ -227,7 +224,7 @@ def _css():
         # ── export button ──
         "\n.export-btn{display:block;width:100%;margin-top:16px;padding:14px;font-family:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;border:3px solid " + B + ";background:" + FG + ";color:#fff;cursor:pointer;transition:all .15s;box-shadow:5px 5px 0 " + B + "}"
         "\n.export-btn:hover{box-shadow:8px 8px 0 " + B + ";transform:translate(-3px,-3px);background:" + A + "}"
-        "\n@media(max-width:900px){.hero h1{font-size:48px}.cards{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.sidebar{display:none}.loop{flex-direction:column}.ls{margin-right:0}}"
+        "\n@media(max-width:1024px){.hero-inner{padding:64px 24px 48px}.demo-wrap{padding:0 24px 64px}.hero-text h1{font-size:clamp(44px,7vw,80px)}.demo-header{flex-wrap:wrap;gap:10px}.demo-dots{flex-wrap:wrap}.cards{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.sidebar{display:none}.loop{flex-direction:column}.ls{margin-right:0}}"
         "\n"
     )
 
@@ -550,10 +547,7 @@ def _landing():
         _hero_bg()
         + '<div class="hero-inner">'
         '<div class="hero-text">'
-        '<h1>'
-        '<span class="line"><span>When an AI agent fails,</span></span>'
-        '<span class="line"><span>the world <strong style="color:#D64040">keeps changing</strong></span></span>'
-        '</h1>'
+        '<h1>When an AI agent fails,<br>the world <strong style="color:#D64040">keeps</strong><br><strong style="color:#D64040">changing</strong></h1>'
         "<p>RIFT freezes the incident world so you can reproduce the exact failure and prove the fix.</p>"
         '<div class="hero-btns">'
         '<a class="btn btn-fill" href="dashboard.html"><span>Open Dashboard</span></a>'
@@ -561,6 +555,22 @@ def _landing():
         "</div>"
         "</div>"
         "</div>"
+        '<div class="demo-wrap">'
+        '<div class="demo">'
+        '<div class="scenarios">' + sc_btns + '</div>'
+        '<div class="demo-header">'
+        "<h3>Incident Walkthrough</h3>"
+        '<div class="demo-dots">' + dots_html + "</div>"
+        "</div>"
+        '<div class="demo-content" id="demo-content">' + all_steps_html + "</div>"
+        '<div class="demo-footer">'
+        '<button id="btn-prev" onclick="prev()">&larr; Prev</button>'
+        '<button onclick="reset()">Reset</button>'
+        '<button id="btn-next" onclick="next()">Next &rarr;</button>'
+        "</div>"
+        "</div>"
+        "</div>"
+        '<div style="clear:both"></div>'
         '<div class="wrap">'
         '<div class="section" id="how">'
         '<div class="sec-label">/ How it works</div>'
@@ -577,24 +587,6 @@ def _landing():
         '<div class="ls"><strong>VERIFY</strong><small>Prove fix works</small><span class="ls-arrow">&rarr;</span></div>'
         '<div class="ls"><strong>RESOLVE</strong><small>Fix survived incident</small></div>'
         "</div></div>"
-        '<div class="section" id="walkthrough">'
-        '<div class="sec-label">/ Walkthrough</div>'
-        "<h2>See it <em>fail</em></h2>"
-        '<p class="sub">Step through an incident from failure to resolution.</p>'
-        '<div class="demo">'
-        '<div class="scenarios">' + sc_btns + '</div>'
-        '<div class="demo-header">'
-        "<h3>Incident Walkthrough</h3>"
-        '<div class="demo-dots">' + dots_html + "</div>"
-        "</div>"
-        '<div class="demo-content" id="demo-content">' + all_steps_html + "</div>"
-        '<div class="demo-footer">'
-        '<button id="btn-prev" onclick="prev()">&larr; Prev</button>'
-        '<button onclick="reset()">Reset</button>'
-        '<button id="btn-next" onclick="next()">Next &rarr;</button>'
-        "</div>"
-        "</div>"
-        "</div>"
         '<div class="section">'
         '<div class="sec-label">/ The problem</div>'
         "<h2>The <em>missing boundary</em></h2>"
@@ -694,12 +686,14 @@ def _dashboard(data):
         "</div>"
         '<div class="main">'
         '<div class="m-top"><h2>Incident Command Center</h2>'
+        '<div style="display:flex;gap:8px;align-items:center">'
+        '<button onclick="runLive()" style="padding:10px 20px;font-family:inherit;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:3px solid ' + C["border"] + ';background:' + C["accent"] + ';color:#fff;cursor:pointer;box-shadow:4px 4px 0 ' + C["border"] + ';transition:all .15s" onmouseover="this.style.boxShadow=\'6px 6px 0 ' + C["border"] + '\';this.style.transform=\'translate(-2px,-2px)\'" onmouseout="this.style.boxShadow=\'4px 4px 0 ' + C["border"] + '\';this.style.transform=\'none\'">RUN LIVE DEMO</button>'
         '<div class="m-stats">'
         '<div class="m-stat">Runs <em>' + str(len(runs)) + "</em></div>"
         '<div class="m-stat">Incidents <em>' + str(len(incidents)) + "</em></div>"
         '<div class="m-stat">Fixes <em>' + str(len(fixes)) + "</em></div>"
         '<div class="m-stat">Resolved <em>' + str(resolved) + "</em></div>"
-        "</div></div>"
+        "</div></div></div>"
         '<div id="view">'
         '<div class="empty"><div class="empty-icon">&diams;</div><h3>Select an incident</h3><p>Choose from the sidebar to begin investigation.</p></div>'
         "</div></div></div>"
@@ -759,6 +753,40 @@ def _js(dj):
         "var blob=new Blob([md],{type:'text/markdown'});"
         "var a=document.createElement('a');a.href=URL.createObjectURL(blob);"
         "a.download=inc.incident_id+'-evidence.md';a.click();}"
+        "function runLive(){"
+        "var v=document.getElementById('view');"
+        "var inc=D.incidents[0];var r=D.runs.find(function(x){return x.run_id===(inc?inc.run_id:'')});"
+        "var w=D.worlds.find(function(x){return x.incident_id===(inc?inc.incident_id:'')});"
+        "var rp=D.replays.find(function(x){return x.incident_id===(inc?inc.incident_id:'')});"
+        "var fx=D.fixes.find(function(x){return x.agent_version===(inc?inc.agent_version:'')});"
+        "if(!inc){v.innerHTML='<div class=\"empty\"><h3>No incidents recorded</h3><p>Run the demo first from the landing page.</p></div>';return;}"
+        "var steps=["
+        "{n:'FAIL',badge:'info',bt:'running',delay:800,fn:function(){return p('FAIL','info','running',[kv('run_id',r?r.run_id:'...'),kv('task',r?JSON.stringify(r.task):'loading...'),kv('agent',r?r.agent_version:'...'),kv('outcome','processing...')]);}},"
+        "{n:'CAPTURE',badge:'err',bt:inc.category,delay:1200,fn:function(){return p('CAPTURE & FREEZE','err',inc.category,[kv('incident',inc.incident_id),kv('what',inc.what_happened),kv('why',inc.why_it_matters),kv('cause',inc.root_cause),hsh('hash',inc.incident_hash)]);}},"
+        "{n:'FREEZE',badge:'info',bt:'sealed',delay:1000,fn:function(){return p('RECONSTRUCT','info','sealed',[kv('category',w?w.category:''),hsh('freeze_hash',w?w.freeze_hash:'')]);}},"
+        "{n:'RIFT',badge:rp&&rp.result==='FAIL'?'err':'ok',bt:rp?rp.result:'...',delay:1400,fn:function(){var res=rp?rp.result:'...';var ok=res!=='FAIL';return p('RIFT',ok?'ok':'err',res,[kv('agent',rp?rp.agent_version:'...'),kv('result',res),kv('reproduced',rp?String(rp.failure_reproduced):'...')]);}},"
+        "{n:'DIAG',badge:'err',bt:'divergence',delay:1000,fn:function(){var d=inc.diagnosis||{};return p('DIAGNOSE','err','divergence',[kv('expected',d.expected||'n/a'),kv('actual',d.actual||'n/a'),kv('signal',d.decision_signal||'n/a'),kv('ignored',d.ignored_signal||'n/a')]);}},"
+        "{n:'FIX',badge:'ok',bt:'verified',delay:1200,fn:function(){return p('FIX & VERIFY','ok','verified',[kv('verdict',fx?fx.verdict:'...'),kv('fixed',fx?fx.fixed+'/'+fx.total:'...')]);}},"
+        "{n:'VER',badge:'ok',bt:'pass',delay:800,fn:function(){return '';}},"
+        "{n:'GATE',badge:'ok',bt:'authorized',delay:600,fn:function(){return '';}},"
+        "{n:'RELEASE',badge:'ok',bt:'released',delay:400,fn:function(){return p('RESOLVE','ok','released',[kv('agent',fx?fx.fixed_agent||'v1.1':'v1.1'),kv('target','production'),'<div style=\"padding:12px 0;font-family:monospace;font-size:10px;line-height:1.8\"><strong>RIFT RELEASE GATE</strong><br><span style=\"color:#2D8A4E\">WORLD INTEGRITY       PASS</span><br><span style=\"color:#2D8A4E\">FAILURE REPRODUCED    PASS</span><br><span style=\"color:#2D8A4E\">FIX VERIFIED          PASS</span><br><span style=\"color:#2D8A4E\">EVIDENCE CHAIN        PASS</span><br><br><strong style=\"color:#2D8A4E\">DECISION              AUTHORIZED</strong><br><strong style=\"color:#2D8A4E\">DEPLOYMENT            RELEASED</strong></div>','<div style=\"padding:12px 0\"><button class=\"export-btn\" onclick=\"exportDashEvidence()\">EXPORT EVIDENCE &darr;</button></div>']);}}"
+        "];"
+        "var h='<div class=\"pipeline\" id=\"live-pipe\">';"
+        "steps.forEach(function(s,i){h+='<div class=\"ps wait\" id=\"lp-'+i+'\">'+s.n+'</div>';});"
+        "h+='</div><div id=\"live-panels\"></div>';"
+        "v.innerHTML=h;"
+        "var idx=0;function next(){"
+        "if(idx>=steps.length)return;"
+        "var s=steps[idx];"
+        "var el=document.getElementById('lp-'+idx);"
+        "if(el){el.className='ps now';}"
+        "setTimeout(function(){"
+        "if(el){el.className='ps done';}"
+        "var content=s.fn();"
+        "if(content){document.getElementById('live-panels').innerHTML+=content;}"
+        "idx++;next();"
+        "},s.delay);}"
+        "next();}"
         "</script>"
     )
 
