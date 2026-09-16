@@ -107,6 +107,8 @@ def _css():
         "\n.step-detail .v{color:" + FG + ";font-weight:600}"
         "\n.step-detail .err{color:" + A + ";font-weight:700}"
         "\n.step-detail .ok{color:" + A2 + ";font-weight:700}"
+        "\n.say{font-size:14px;line-height:1.65;font-style:italic;border-left:4px solid " + A + ";background:" + S + ";padding:12px 16px;margin:0 0 16px;color:" + FG + "}"
+        "\n.say b{display:block;font-style:normal;font-size:9px;font-weight:800;letter-spacing:2px;color:" + A + ";margin-bottom:4px}"
         "\n.demo-footer{display:flex;border-top:3px solid " + B + "}"
         "\n.demo-footer button{flex:1;padding:14px;font-family:inherit;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:none;border-right:3px solid " + B + ";cursor:pointer;background:transparent;transition:all .15s ease}"
         "\n.demo-footer button:last-child{border-right:none}"
@@ -205,6 +207,8 @@ def _css():
         "\n.pipeline .ps.done{background:" + FG + ";color:#fff;border-color:" + FG + ";transform:translateY(-2px)}"
         "\n.pipeline .ps.now{background:" + A + ";color:#fff;border-color:" + A + ";animation:stepGlow 2s infinite;transform:translateY(-3px)}"
         "\n.pipeline .ps.wait{color:" + MU + ";background:" + S2 + "}"
+        "\n.say-live{display:flex;gap:12px;align-items:flex-start;background:" + FG + ";color:#fff;border:3px solid " + B + ";box-shadow:5px 5px 0 " + B + ";padding:16px 20px;margin:20px 0;font-size:15px;line-height:1.65}"
+        "\n.say-tag{background:" + A + ";color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;padding:5px 10px;flex-shrink:0;margin-top:2px}"
         "\n.export-box{font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;padding:16px;border:2px solid " + B + ";background:" + S2 + ";max-height:200px;overflow-y:auto;white-space:pre-wrap}"
         "\n.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px;text-align:center}"
         "\n.empty h3{font-size:18px;font-weight:800;margin-bottom:8px}"
@@ -282,11 +286,17 @@ def _landing():
                  '<span class="k">agent</span>         <span class="v">v1.0</span>\n'
                  '<span class="k">state</span>         <span class="v">R91=COMPLETED, R92=PENDING</span>\n'
                  '<span class="ok">47 artifacts recorded</span>'),
-                ("freeze", "t-freeze", "FREEZE",
-                 "The incident world is hash-sealed.",
-                 '<span class="k">world hash</span>\n'
-                 '<span class="v">sha256:9f86d08e..4d6e8f</span>\n\n'
-                 '<span class="ok">TAMPERING DETECTED &rarr; RELEASE BLOCKED</span>'),
+                 ("drift", "t-fail", "DRIFT",
+                  "The live world moves on. The incident world is gone.",
+                  '<span class="k">live state now</span>  <span class="err">R92 = COMPLETED (auto-settled)</span>\n'
+                  '<span class="k">new refund</span>     <span class="v">R93 &middot; $80 &middot; PENDING opened</span>\n'
+                  '<span class="k">agent</span>          <span class="v">v1.0 &rarr; v1.0.1 redeployed</span>\n'
+                  '<span class="err">ORIGINAL WORLD UNRECOVERABLE FROM LIVE STATE</span>'),
+                 ("freeze", "t-freeze", "FREEZE",
+                  "The incident world is hash-sealed.",
+                  '<span class="k">world hash</span>\n'
+                  '<span class="v">sha256:9f86d08e..4d6e8f</span>\n\n'
+                  '<span class="ok">SEALED</span>'),
                 ("reconstruct", "t-reconstruct", "RECONSTRUCT",
                  "RIFT rebuilds the exact incident environment.",
                  '<span class="k">customer</span>    <span class="v">Sarah Chen</span>\n'
@@ -366,6 +376,12 @@ def _landing():
                  '<span class="k">agent</span>         <span class="v">v1.0</span>\n'
                  '<span class="k">tools called</span>  <span class="err">update_address, send_email</span>\n'
                  '<span class="ok">32 artifacts recorded</span>'),
+                 ("drift", "t-fail", "DRIFT",
+                  "The live world moves on. The incident world is gone.",
+                  '<span class="k">live state now</span>  <span class="err">address changed again &rarr; 4 Oak Ave</span>\n'
+                  '<span class="k">tool logs</span>       <span class="v">send_email log rotated &middot; entry gone</span>\n'
+                  '<span class="k">tools</span>           <span class="v">send_email() v2 deployed, new params</span>\n'
+                  '<span class="err">ORIGINAL WORLD UNRECOVERABLE FROM LIVE STATE</span>'),
                 ("freeze", "t-freeze", "FREEZE",
                  "The incident world is hash-sealed.",
                  '<span class="k">world hash</span>\n'
@@ -445,6 +461,12 @@ def _landing():
                  '<span class="k">agent</span>         <span class="v">v1.0</span>\n'
                  '<span class="k">order state</span>   <span class="err">SHIPPED</span>\n'
                  '<span class="ok">28 artifacts recorded</span>'),
+                 ("drift", "t-fail", "DRIFT",
+                  "The live world moves on. The incident world is gone.",
+                  '<span class="k">live state now</span>  <span class="err">order #1842 &rarr; DELIVERED</span>\n'
+                  '<span class="k">agent</span>           <span class="v">v1.0 &rarr; v1.0.1 redeployed</span>\n'
+                  '<span class="k">policy</span>          <span class="v">cancel rules updated since incident</span>\n'
+                  '<span class="err">ORIGINAL WORLD UNRECOVERABLE FROM LIVE STATE</span>'),
                 ("freeze", "t-freeze", "FREEZE",
                  "The incident world is hash-sealed.",
                  '<span class="k">world hash</span>\n'
@@ -514,17 +536,66 @@ def _landing():
         },
     }
 
+    # presenter narration per scenario (what to SAY on each step)
+    narr = {
+        "refund": [
+            "Two refunds. Both eighty dollars. One completed, one pending. The agent is told to process the pending refund. Watch — it picks the completed one. That is the incident.",
+            "RIFT captures the incident — the request, the agent, the state.",
+            "Now the live state moves on. The world that caused this failure is gone.",
+            "But RIFT already froze that world. State, context, tools, trajectory — hash-sealed.",
+            "What if you could bring that world back? RIFT rebuilds the exact incident environment.",
+            "The original agent runs against the frozen incident. Not similar data. The exact world. Same decision. Same failure. Reproduced.",
+            "The agent matched by amount. It ignored the status.",
+            "So I fix the agent: filter by status, then amount.",
+            "Same incident, fixed agent. Pending refund selected. The fix survives the exact failure.",
+            "World integrity passes. Failure reproduced. Fix verified. Evidence chain intact. Release authorized.",
+            "Now the evidence turns hostile. The frozen world changes mid-investigation — integrity fails, the chain breaks, release blocked. RIFT does not recommend release. It decides.",
+            "Restore the valid evidence. Gate passes. And RIFT produces the evidence package — proof the fix survived the world that broke it.",
+        ],
+        "address": [
+            "The user asks for an address update. The agent updates it — and sends a promo email nobody asked for. That is the incident.",
+            "RIFT captures the request, the agent, and every tool call.",
+            "Live moves on. The address changes again, the email log rotates away, the tool is redeployed. The incident world is gone.",
+            "But the frozen world is sealed — tools, state, trajectory intact.",
+            "RIFT rebuilds the exact environment the agent acted in.",
+            "Same agent, same world — it sends the email again. Reproduced.",
+            "The agent was never constrained to the user intent. It freelanced.",
+            "Constrain it: only actions the user directly requested.",
+            "Same incident — address updated, no email. Fix verified.",
+            "All four gate checks pass. Release authorized.",
+            "Hostile evidence: the frozen world shifts mid-investigation. Integrity fails. Release blocked.",
+            "Valid evidence restored. Gate passes. Evidence package exported.",
+        ],
+        "cancel": [
+            "Order 1842 already shipped. The agent is told to cancel it — and cancels a shipped order. That is the incident.",
+            "RIFT captures the request, the agent, the order state.",
+            "Live moves on. The order is delivered, the agent redeployed, cancel rules rewritten. The incident world is gone.",
+            "The frozen world is sealed exactly as the agent saw it.",
+            "RIFT rebuilds the exact moment: order shipped, cancel requested.",
+            "Same agent, same world — it cancels again. Reproduced.",
+            "The agent never checked order status before canceling.",
+            "Check status first. Shipped means refund request, not cancel.",
+            "Same incident — the fixed agent escalates instead. Verified.",
+            "Gate passes on all four checks. Release authorized.",
+            "Alter the frozen evidence and the gate refuses. Blocked.",
+            "Restore, re-verify, authorize. Evidence package exported.",
+        ],
+    }
+
     # build HTML for all scenarios (only first visible)
     all_steps_html = ""
     for sc_key, sc in scenarios.items():
         for idx, (step_id, title_cls, title_text, desc, detail) in enumerate(sc["steps"]):
             num = str(idx + 1).zfill(2)
             vis = "block" if sc_key == "refund" and idx == 0 else "none"
+            say = narr.get(sc_key, [""] * len(sc["steps"]))[idx] if idx < len(narr.get(sc_key, [])) else ""
+            say_html = '<div class="say"><b>SAY</b>' + say + "</div>" if say else ""
             all_steps_html += (
                 '<div class="step-card" data-sc="' + sc_key + '" data-step="' + str(idx) + '" style="display:' + vis + '">'
                 '<div class="step-num">' + num + "</div>"
                 '<div class="step-title ' + title_cls + '">' + title_text + "</div>"
                 '<div class="step-text">' + desc + "</div>"
+                + say_html +
                 '<div class="step-detail">' + detail + "</div>"
                 "</div>"
             )
@@ -535,9 +606,9 @@ def _landing():
         ac = " active" if sc_key == "refund" else ""
         sc_btns += '<button class="sc-btn' + ac + '" onclick="switchSc(\'' + sc_key + '\')">' + sc["label"] + '</button>'
 
-    # dots (11 per scenario)
+    # dots (one per step in the longest scenario)
     dots_html = ""
-    for i in range(11):
+    for i in range(max(len(v["steps"]) for v in scenarios.values())):
         dots_html += '<div class="demo-dot" data-dot="' + str(i) + '"></div>'
 
     # scenario data as JSON for JS
@@ -758,22 +829,23 @@ def _js(dj):
         "var inc=D.incidents[0];var r=D.runs.find(function(x){return x.run_id===(inc?inc.run_id:'')});"
         "var w=D.worlds.find(function(x){return x.incident_id===(inc?inc.incident_id:'')});"
         "var rp=D.replays.find(function(x){return x.incident_id===(inc?inc.incident_id:'')});"
-        "var fx=D.fixes.find(function(x){return x.agent_version===(inc?inc.agent_version:'')});"
         "if(!inc){v.innerHTML='<div class=\"empty\"><h3>No incidents recorded</h3><p>Run the demo first from the landing page.</p></div>';return;}"
+        "var fx=D.fixes.find(function(x){return x.agent_version===(inc?inc.agent_version:'')})||D.fixes[0]||{};"
         "var steps=["
-        "{n:'FAIL',badge:'info',bt:'running',delay:800,fn:function(){return p('FAIL','info','running',[kv('run_id',r?r.run_id:'...'),kv('task',r?JSON.stringify(r.task):'loading...'),kv('agent',r?r.agent_version:'...'),kv('outcome','processing...')]);}},"
-        "{n:'CAPTURE',badge:'err',bt:inc.category,delay:1200,fn:function(){return p('CAPTURE & FREEZE','err',inc.category,[kv('incident',inc.incident_id),kv('what',inc.what_happened),kv('why',inc.why_it_matters),kv('cause',inc.root_cause),hsh('hash',inc.incident_hash)]);}},"
-        "{n:'FREEZE',badge:'info',bt:'sealed',delay:1000,fn:function(){return p('RECONSTRUCT','info','sealed',[kv('category',w?w.category:''),hsh('freeze_hash',w?w.freeze_hash:'')]);}},"
-        "{n:'RIFT',badge:rp&&rp.result==='FAIL'?'err':'ok',bt:rp?rp.result:'...',delay:1400,fn:function(){var res=rp?rp.result:'...';var ok=res!=='FAIL';return p('RIFT',ok?'ok':'err',res,[kv('agent',rp?rp.agent_version:'...'),kv('result',res),kv('reproduced',rp?String(rp.failure_reproduced):'...')]);}},"
-        "{n:'DIAG',badge:'err',bt:'divergence',delay:1000,fn:function(){var d=inc.diagnosis||{};return p('DIAGNOSE','err','divergence',[kv('expected',d.expected||'n/a'),kv('actual',d.actual||'n/a'),kv('signal',d.decision_signal||'n/a'),kv('ignored',d.ignored_signal||'n/a')]);}},"
-        "{n:'FIX',badge:'ok',bt:'verified',delay:1200,fn:function(){return p('FIX & VERIFY','ok','verified',[kv('verdict',fx?fx.verdict:'...'),kv('fixed',fx?fx.fixed+'/'+fx.total:'...')]);}},"
-        "{n:'VER',badge:'ok',bt:'pass',delay:800,fn:function(){return '';}},"
-        "{n:'GATE',badge:'ok',bt:'authorized',delay:600,fn:function(){return '';}},"
-        "{n:'RELEASE',badge:'ok',bt:'released',delay:400,fn:function(){return p('RESOLVE','ok','released',[kv('agent',fx?fx.fixed_agent||'v1.1':'v1.1'),kv('target','production'),'<div style=\"padding:12px 0;font-family:monospace;font-size:10px;line-height:1.8\"><strong>RIFT RELEASE GATE</strong><br><span style=\"color:#2D8A4E\">WORLD INTEGRITY       PASS</span><br><span style=\"color:#2D8A4E\">FAILURE REPRODUCED    PASS</span><br><span style=\"color:#2D8A4E\">FIX VERIFIED          PASS</span><br><span style=\"color:#2D8A4E\">EVIDENCE CHAIN        PASS</span><br><br><strong style=\"color:#2D8A4E\">DECISION              AUTHORIZED</strong><br><strong style=\"color:#2D8A4E\">DEPLOYMENT            RELEASED</strong></div>','<div style=\"padding:12px 0\"><button class=\"export-btn\" onclick=\"exportDashEvidence()\">EXPORT EVIDENCE &darr;</button></div>']);}}"
+        "{n:'FAIL',delay:800,say:'Two refunds. Both eighty dollars. One completed, one pending. The agent is told to process the pending refund. Watch - it picks the completed one. That is the incident.',fn:function(){return p('FAIL','info','running',[kv('run_id',r?r.run_id:'...'),kv('task',r?JSON.stringify(r.task):'loading...'),kv('agent',r?r.agent_version:'...'),kv('outcome',r?(r.outcome||'FAIL'):'...')]);}},"
+        "{n:'CAPTURE',delay:1200,say:'RIFT captures the incident - the request, the agent, the state. The full causal envelope.',fn:function(){return p('CAPTURE & FREEZE','err',inc.category,[kv('incident',inc.incident_id),kv('what',inc.what_happened),kv('why',inc.why_it_matters),kv('cause',inc.root_cause),hsh('hash',inc.incident_hash)]);}},"
+        "{n:'DRIFT',delay:1000,say:'Now the live state moves on. The world that caused this failure is gone - unrecoverable from live.',fn:function(){return p('DRIFT','err','world gone',[kv('live_state','advanced beyond incident'),kv('frozen_state','preserved - hash-sealed'),kv('conclusion','original world unrecoverable from live')]);}},"
+        "{n:'FREEZE',delay:1000,say:'But the incident world is frozen and hash-sealed. State, context, tools, trajectory.',fn:function(){return p('RECONSTRUCT','info','sealed',[kv('category',w?w.category:''),hsh('freeze_hash',w?w.freeze_hash:'')]);}},"
+        "{n:'RIFT',delay:1400,say:'The original agent runs against the frozen world. Same decision. Same failure. Reproduced.',fn:function(){var res=rp?rp.result:'...';var ok=res!=='FAIL';return p('RIFT',ok?'ok':'err',res,[kv('agent',rp?rp.agent_version:'...'),kv('result',res),kv('reproduced',rp?String(rp.failure_reproduced):'...')]);}},"
+        "{n:'DIAG',delay:1000,say:'It matched by amount and ignored the status.',fn:function(){var d=inc.diagnosis||{};return p('DIAGNOSE','err','divergence',[kv('expected',d.expected||'n/a'),kv('actual',d.actual||'n/a'),kv('signal',d.decision_signal||'n/a'),kv('ignored',d.ignored_signal||'n/a')]);}},"
+        "{n:'FIX',delay:1200,say:'Fix the agent, run the same incident again - pending refund selected. The fix survives the exact failure.',fn:function(){return p('FIX & VERIFY','ok','verified',[kv('verdict',fx.verdict||'...'),kv('fixed',(fx.fixed||'?')+'/'+(fx.total||'?'))]);}},"
+        "{n:'VER',delay:800,say:'Verification holds against the frozen incident.',fn:function(){return '';}},"
+        "{n:'GATE',delay:600,say:'Four checks. RIFT does not recommend release - it decides.',fn:function(){return '';}},"
+        "{n:'RELEASE',delay:400,say:'Restore valid evidence, authorize, export the package. A trace tells you what happened. RIFT brings back the world that made it happen.',fn:function(){return p('RESOLVE','ok','released',[kv('agent',fx.fixed_agent||'v1.1'),kv('target','production'),'<div style=\"padding:12px 0;font-family:monospace;font-size:10px;line-height:1.8\"><strong>RIFT RELEASE GATE</strong><br><span style=\"color:#2D8A4E\">WORLD INTEGRITY       PASS</span><br><span style=\"color:#2D8A4E\">FAILURE REPRODUCED    PASS</span><br><span style=\"color:#2D8A4E\">FIX VERIFIED          PASS</span><br><span style=\"color:#2D8A4E\">EVIDENCE CHAIN        PASS</span><br><br><strong style=\"color:#2D8A4E\">DECISION              AUTHORIZED</strong><br><strong style=\"color:#2D8A4E\">DEPLOYMENT            RELEASED</strong></div>','<div style=\"padding:12px 0\"><button class=\"export-btn\" onclick=\"exportDashEvidence()\">EXPORT EVIDENCE &darr;</button></div>']);}}"
         "];"
         "var h='<div class=\"pipeline\" id=\"live-pipe\">';"
         "steps.forEach(function(s,i){h+='<div class=\"ps wait\" id=\"lp-'+i+'\">'+s.n+'</div>';});"
-        "h+='</div><div id=\"live-panels\"></div>';"
+        "h+='</div><div class=\"say-live\"><span class=\"say-tag\">SAY</span><span id=\"say-text\">'+steps[0].say+'</span></div><div id=\"live-panels\"></div>';"
         "v.innerHTML=h;"
         "var idx=0;function next(){"
         "if(idx>=steps.length)return;"
@@ -782,10 +854,11 @@ def _js(dj):
         "if(el){el.className='ps now';}"
         "setTimeout(function(){"
         "if(el){el.className='ps done';}"
+        "var st=document.getElementById('say-text');if(st&&s.say){st.textContent=s.say;}"
         "var content=s.fn();"
-        "if(content){document.getElementById('live-panels').innerHTML+=content;}"
+        "if(content){document.getElementById('live-panels').innerHTML=content;}"
         "idx++;next();"
-        "},s.delay);}"
+        "},Math.max(s.delay,6000));}"
         "next();}"
         "</script>"
     )
