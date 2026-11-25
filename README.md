@@ -111,3 +111,32 @@ python3 test_delta.py   # 11 tests
 - `test_rift.py`, `test_llm_adapter.py`, `test_delta.py` — tests
 - `cli.py`, `mcp.py` — DELTA surface
 - `SUBMISSION.md` — submission copy
+
+# RIFT-QNX — QNX Resource Manager Incident Replay & Assurance
+
+A QNX 8.0-focused extension of RIFT that applies the same incident-to-resolution loop to
+real-time embedded systems:
+
+```
+qnx/
+  target/                # QNX SDP 8.0 resource manager + clients
+  host/rift_qnx/         # Trace parser, receive-reserve contract detector
+  tests/fixtures/        # Sample QNX traceprinter fixtures
+  docs/PRD.md            # RIFT-QNX build-against spec
+  docs/demo.py           # Full incident loop (capture, freeze, reproduce, verify)
+```
+
+**The problem**: QNX resource managers can stall when workers exhaust. Developers see traces but
+struggle to reproduce and verify fixes.
+
+**The solution**: Capture real QNX kernel traces → Freeze causal conditions → Reproduce on QEMU
+→ Verify the corrected design retains receive reserve and satisfies the invariant
+`minimum_receive_blocked_workers ≥ 1`.
+
+Run the demo:
+
+```bash
+python3 qnx/docs/demo.py
+```
+
+See `qnx/README.md` for details.
