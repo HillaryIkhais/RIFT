@@ -1,1 +1,21 @@
 .vercel
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+.env
+venv/
+# RIFT-QNX demo/test outputs
+.rift_store/qnx/
+.rift_store/runs/
+.rift_store/incidents/
+.rift_store/worlds/
+.rift_store/exports/
+.rift_store/fixes/
+.rift_store/replays/
+.replay_test/
+.replay_test_llm/

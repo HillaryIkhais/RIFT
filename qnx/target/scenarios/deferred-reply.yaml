@@ -1,0 +1,53 @@
+# RIFT-QNX scenario: deferred-reply (Version B — corrected design)
+# Same workload as blocking-handler; handler uses rcvid + _RESMGR_NOREPLY + MsgReply.
+
+scenario_id: RIFT-QNX-SCENARIO-DEFERRED-REPLY
+description: >
+  Corrected resource manager: handler saves rcvid, returns _RESMGR_NOREPLY,
+  and a completion worker replies via MsgReply. The worker pool stays
+  available; clients wait in REPLY rather than SEND-blocking the pool.
+
+target:
+  os: "QNX SDP 8.0"
+  arch: x86_64
+  environment: QEMU
+  kernel_trace_class: [THREAD, COMMUNICATION]
+
+resource_manager:
+  path: /dev/rift_resmgr
+  binary: rift_resmgr
+  mode: deferred
+  source: qnx/target/resource_manager/src/resmgr_main.c
+
+pool_configuration:
+  lo_water: 1
+  increment: 1
+  hi_water: 4
+  maximum: 4
+  worker_priority: 10
+  worker_stack_size: 524288
+
+workload:
+  clients: 8
+  requests_per_client: 40
+  op_len: 256
+  concurrency: 4
+  burst_profile: concurrent
+  response_budget_ns: 200000000   # 200 ms (deferred completion adds device latency)
+  deterministic_seed: 7
+
+trace:
+  capture_tool: tracelogger
+  events: [THSEND, THRECEIVE, THREPLY, THRUNNING, THREADY, THNANOSLEEP,
+           THMUTEX, THWAITPAGE, SND_MESSAGE, REC_MESSAGE, REPLY_MESSAGE]
+  output_format: kev
+  normalized_by: traceprinter
+
+expected_diagnosis:
+  primary: PASS
+  secondary: []
+
+acceptance:
+  receive_reserve_violation: false
+  client_send_blocking: false
+  fix_verification_required: true

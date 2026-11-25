@@ -1,0 +1,24 @@
+# Sample QNX traceprinter output (fixture) for RIFT-QNX tests.
+# Thread + communication class events around a receive-reserve exhaustion.
+# Format approximates real QNX traceprinter text.
+1000.000000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THRUNNING state=RUNNING
+1000.100000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THRECEIVE state=RECEIVE
+1000.200000 pid=100 tid=11 proc=rift_resmgr name=worker THREAD: THRECEIVE state=RECEIVE
+1000.300000 pid=100 tid=12 proc=rift_resmgr name=worker THREAD: THRECEIVE state=RECEIVE
+1000.400000 pid=100 tid=13 proc=rift_resmgr name=worker THREAD: THRECEIVE state=RECEIVE
+1001.000000 pid=200 tid=20 proc=load_client name=client THREAD: THSEND state=SEND
+1001.000000 pid=200 tid=20 proc=load_client name=client COMM: SND_MESSAGE pid=200 tid=20 rcvid=500
+1001.100000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THRUNNING state=RUNNING
+1001.200000 pid=100 tid=11 proc=rift_resmgr name=worker THREAD: THRUNNING state=RUNNING
+1001.300000 pid=100 tid=11 proc=rift_resmgr name=worker THREAD: THNANOSLEEP state=NANOSLEEP
+1002.000000 pid=200 tid=20 proc=load_client name=client THREAD: THSEND state=SEND
+1002.100000 pid=200 tid=21 proc=load_client name=client THREAD: THSEND state=SEND
+1002.100000 pid=200 tid=21 proc=load_client name=client COMM: SND_MESSAGE pid=200 tid=21 rcvid=501
+1003.000000 pid=100 tid=12 proc=rift_resmgr name=worker THREAD: THRUNNING state=RUNNING
+1003.100000 pid=100 tid=12 proc=rift_resmgr name=worker THREAD: THNANOSLEEP state=NANOSLEEP
+1003.200000 pid=100 tid=13 proc=rift_resmgr name=worker THREAD: THRUNNING state=RUNNING
+1003.300000 pid=100 tid=13 proc=rift_resmgr name=worker THREAD: THNANOSLEEP state=NANOSLEEP
+1004.000000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THRUNNING state=RUNNING
+1005.000000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THRECEIVE state=RECEIVE
+1006.000000 pid=200 tid=20 proc=load_client name=client COMM: REPLY_MESSAGE pid=200 tid=20 rcvid=500
+1006.100000 pid=100 tid=10 proc=rift_resmgr name=main THREAD: THREPLY state=REPLY

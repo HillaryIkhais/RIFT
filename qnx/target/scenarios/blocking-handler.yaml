@@ -1,0 +1,55 @@
+# RIFT-QNX scenario: blocking-handler (Version A — faulty baseline)
+# Demonstrates receive-reserve exhaustion under concurrent load.
+
+scenario_id: RIFT-QNX-SCENARIO-BLOCKING-HANDLER
+description: >
+  Resource manager with a slow synchronous handler and a constrained thread
+  pool. Concurrent clients exhaust workers, drain the receive reserve, and
+  block in SEND. The failure invariant is receive_reserve >= 1 during active
+  load.
+
+target:
+  os: "QNX SDP 8.0"
+  arch: x86_64
+  environment: QEMU
+  kernel_trace_class: [THREAD, COMMUNICATION]
+
+resource_manager:
+  path: /dev/rift_resmgr
+  binary: rift_resmgr
+  mode: blocking            # blocking | deferred
+  source: qnx/target/resource_manager/src/resmgr_main.c
+
+pool_configuration:
+  lo_water: 1
+  increment: 1
+  hi_water: 4
+  maximum: 4
+  worker_priority: 10
+  worker_stack_size: 524288
+
+workload:
+  clients: 8
+  requests_per_client: 40
+  op_len: 256
+  concurrency: 4
+  burst_profile: concurrent
+  response_budget_ns: 100000000   # 100 ms
+  deterministic_seed: 7
+
+trace:
+  capture_tool: tracelogger
+  events: [THSEND, THRECEIVE, THREPLY, THRUNNING, THREADY, THNANOSLEEP,
+           THMUTEX, THWAITPAGE, SND_MESSAGE, REC_MESSAGE, REPLY_MESSAGE]
+  output_format: kev
+  normalized_by: traceprinter
+
+expected_diagnosis:
+  primary: RECEIVE_RESERVE_EXHAUSTED
+  secondary: [CLIENT_SEND_BLOCKING, POOL_MAX_EXHAUSTED, HANDLER_BLOCKING,
+              RESPONSE_BUDGET_BREACH]
+
+acceptance:
+  receive_reserve_violation: true
+  client_send_blocking: true
+  fix_verification_required: true
