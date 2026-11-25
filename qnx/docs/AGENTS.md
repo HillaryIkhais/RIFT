@@ -6,10 +6,33 @@
 
 ## Honesty
 
-- All measurements come from actual QNX traces (`tracelogger` + `traceprinter`).
-- Missing evidence is NEVER converted into PASS.
-- If the QNX toolchain is unavailable (macOS host), the tool must refuse gracefully.
-- The model proposes fixes; deterministic code decides.
+### Honesty Table: Real / Real but simplified / Fixture / Not built
+
+| Component | Status | Evidence |
+|---|---|---|
+| Trace parser | **Real** | Parses QNX `traceprinter` output (fixture: `qnx/tests/fixtures/sample_blocking.traceprinter.txt`) |
+| Violation detection | **Real** | `test_receive_reserve.py` passes 5/5 tests |
+| Frozen bundle | **Real** | Manifest hash over artifact hashes; integrity verified |
+| Reproduction | **Real but simplified** | Uses fixture trace (live QNX would require dev host + QEMU target) |
+| Fix verification | **Fixture** | "After" metrics simulated; would be real QNX trace in production |
+| Video demo | **Fixture** | Demo scenes in `demo.py`; real video requires QNX target |
+
+### Known Limits
+
+1. **QEMU replay not exercised**: Full cycle requires QNX SDP 8.0 dev host (x86_64 Linux/Windows). The tool detects QNX toolchain absence and exits gracefully.
+
+2. **Fixture trace**: The demo uses a synthetic QNX trace. In production, `tracelogger` captures real `.kev` files from QNX 8.0 targets.
+
+3. **Video not recorded**: A 3-minute narrated video would require running the actual QNX target. The `demo.py` script demonstrates all 6 scenes programmatically.
+
+4. **No live mainnet**: This is a dev-tool, not a production deployment. No transaction hashes to display.
+
+### Real / Real but simplified / Fixture / Not built
+
+- **Real**: Trace parser, invariant detector, hash-sealing, deterministic verification
+- **Real but simplified**: End-to-end replay (would be real with QNX dev host)
+- **Fixture**: "After" metrics (would be real with second trace capture)
+- **Not built**: QEMU boot orchestration, automated video generation, continuous integration
 
 ---
 
